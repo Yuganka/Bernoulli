@@ -6,7 +6,7 @@ package co.kruzr.bernoulli.app.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import org.kruzr.viewgroupperformance.R;
+import co.kruzr.bernoulli.app.R;
 
 /**
  *

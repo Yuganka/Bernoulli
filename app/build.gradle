@@ -27,9 +27,13 @@ android {
   buildToolsVersion "30.0.2"
 
   defaultConfig {
-    applicationId 'android10.org.viewgroupperformance'
-    minSdkVersion 15
+
+    applicationId 'co.kruzr.bernoulli.app'
+    minSdkVersion 21
     targetSdkVersion 30
+
+    versionCode 1
+    versionName "0.1.0"
   }
 
   lintOptions {
