@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+
+  implementation 'androidx.appcompat:appcompat:1.2.0'
+
   implementation project(':bernoulli')
   implementation 'org.aspectj:aspectjrt:1.9.4'
 }
