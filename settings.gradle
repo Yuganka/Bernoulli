@@ -1,1 +1,1 @@
-include ':app', ':gintonic'
+include ':app', ':bernoulli'
