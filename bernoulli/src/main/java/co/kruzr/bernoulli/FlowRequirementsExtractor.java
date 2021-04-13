@@ -55,20 +55,19 @@ class FlowRequirementsExtractor {
      * object.
      *
      * @param method                      the method for which the requirements have to be extracted
-     * @param hashcodeIFlowStateEvaluator hashcode of the IFlowStateEvaluator interface implemented by the class
-     *                                    where this method is defined
      */
-    public FlowRequirementsExtractor(Method method, Integer hashcodeIFlowStateEvaluator) {
+    public FlowRequirementsExtractor(Method method) {
 
-        if (method.getDeclaringClass() == BernoulliActivity.class || method.getDeclaringClass() == BernoulliFragment.class) {
+        //if (method.getDeclaringClass() == BernoulliActivity.class || method.getDeclaringClass() ==
+        // BernoulliFragment.class) {
 
             shouldEvaluateRequirements = true;
             annotationList = method.getAnnotations();
 
-            stream = new Stream(hashcodeIFlowStateEvaluator);
+            stream = new Stream();
 
-        } else
-            shouldEvaluateRequirements = false;
+       /* } else
+            shouldEvaluateRequirements = false;*/
     }
 
     /**
