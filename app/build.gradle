@@ -4,22 +4,25 @@ import org.aspectj.tools.ajc.Main
 
 buildscript {
   repositories {
+    google()
     mavenCentral()
   }
   dependencies {
-    classpath 'org.aspectj:aspectjtools:1.8.1'
+    classpath 'com.android.tools.build:gradle:3.5.1'
+    classpath 'org.aspectj:aspectjtools:1.9.4'
   }
 }
 
 apply plugin: 'com.android.application'
 
 repositories {
+  google()
   mavenCentral()
 }
 
 dependencies {
-  compile project(':bernoulli')
-  compile 'org.aspectj:aspectjrt:1.8.1'
+  implementation project(':bernoulli')
+  implementation 'org.aspectj:aspectjrt:1.9.4'
 }
 
 android {
