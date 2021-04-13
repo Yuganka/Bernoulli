@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.kruzr.bernoulli">
 
+  <uses-permission android:name="android.permission.BLUETOOTH" />
   <application
       android:allowBackup="false" />
 
