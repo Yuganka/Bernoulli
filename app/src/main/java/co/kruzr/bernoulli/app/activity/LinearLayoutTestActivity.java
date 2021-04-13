@@ -9,20 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import java.util.List;
-
 import co.kruzr.bernoulli.DisabledPolicy;
-import co.kruzr.bernoulli.IFlowStateEvaluator;
-import co.kruzr.bernoulli.Permission;
 import co.kruzr.bernoulli.Settings;
-import co.kruzr.bernoulli.annotation.AddStream;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.app.R;
 
 /**
  *
  */
-public class LinearLayoutTestActivity extends Activity implements IFlowStateEvaluator {
+public class LinearLayoutTestActivity extends Activity {
 
   private LinearLayout myLinearLayout;
 
@@ -34,18 +29,12 @@ public class LinearLayoutTestActivity extends Activity implements IFlowStateEval
     myLinearLayout = (LinearLayout) findViewById(R.id.linearLayoutOne);
     myLinearLayout.invalidate();
     do1SettingWork();
+    Log.e("Bernoulli", "post work");
   }
 
-  @AddStream(withName = "button1SettingWork")
   @RequiresSetting(setting = Settings.GPS, disabledPolicy = DisabledPolicy.FAIL)
   private void do1SettingWork() {
 
     Log.e("Bernoulli", "successfully run 1 setting method");
-  }
-
-  @Override
-  public void onFailure(List<Permission> missingPermissions, List<Settings> missingSettings) {
-
-    Log.e("Bernoulli", "failure!");
   }
 }

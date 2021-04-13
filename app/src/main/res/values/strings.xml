@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">ViewGroup Performance</string>
+  <string name="app_name">Bernoulli</string>
   <string name="url">http://www.android10.org/</string>
 
   <string name="relative_layout_test">Relative Layout Test</string>

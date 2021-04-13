@@ -11,8 +11,7 @@ import lombok.Setter;
 /**
  * Model class for a given stream, which is basically a metaphor for a method.
  *
- * Encapsulates all the permission and setting requirements of the method which has been annotated with an AddStream
- * annotation with the name stored in field uniqueName.
+ * Encapsulates all the permission and setting requirements of the method.
  */
 @NoArgsConstructor
 class Stream {

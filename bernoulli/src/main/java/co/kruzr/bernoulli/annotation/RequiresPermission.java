@@ -8,15 +8,13 @@ import java.lang.annotation.Target;
 
 import co.kruzr.bernoulli.DisabledPolicy;
 import co.kruzr.bernoulli.Permission;
-import co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable;
 
 /***
  * An annotation that encapsulates the permission requirements of a method, and the expected behaviour in the absence
  * of the permission.
  *
- * A method can apply multiple annotations of this type.
+ * A method can apply this annotation only once.
  */
-@Repeatable(PermissionsRepeatable.class)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.CLASS)
 public @interface RequiresPermission {

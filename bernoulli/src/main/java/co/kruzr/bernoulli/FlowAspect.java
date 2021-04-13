@@ -55,8 +55,6 @@ public class FlowAspect {
                 new FlowRequirementsExtractor(methodSignature.getMethod()).getRequirementsOfStream();
         try {
 
-            Log.e("Bernoulli", "Entered try");
-
             if (stream != null) {
 
                 Log.e("Bernoulli", "FlowAspect stream not null");
@@ -72,13 +70,12 @@ public class FlowAspect {
 
             } else {
 
-                Log.e("Bernoulli", "FlowAspect stream is null");
+                Log.e("Bernoulli", "FlowAspect stream is null, proceeding");
                 return joinPoint.proceed();
             }
 
         } catch (Throwable throwable) {
-            Log.e("Bernoulli", "FlowAspect In catch");
-            Log.e("Bernoulli", throwable.getMessage());
+            Log.e("Bernoulli", "FlowAspect In catch " + throwable.getMessage());
             throwable.printStackTrace();
             return joinPoint.proceed();
         }
