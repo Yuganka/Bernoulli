@@ -19,22 +19,42 @@ public class FlowAspect {
     /**
      * Defines a pointcut for the annotation RequiresPermission.
      */
-    private static final String POINTCUT_METHOD_PERMISSION =
+    private static final String POINTCUT_METHOD_SINGLE_PERMISSION =
             "execution(@co.kruzr.bernoulli.annotation.RequiresPermission * *(..))";
 
     /**
      * Defines a pointcut for the annotation RequiresSetting.
      */
-    private static final String POINTCUT_METHOD_SETTING =
+    private static final String POINTCUT_METHOD_SINGLE_SETTING =
             "execution(@co.kruzr.bernoulli.annotation.RequiresSetting * *(..))";
 
+    /**
+     * Defines a pointcut for the annotation RequiresPermission.
+     */
+    private static final String POINTCUT_METHOD_MULTIPLE_PERMISSION =
+            "execution(@co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable * *(..))";
 
-    @Pointcut(POINTCUT_METHOD_PERMISSION)
-    public void methodAnnotatedWithRequiresPermission() {
+    /**
+     * Defines a pointcut for the annotation RequiresSetting.
+     */
+    private static final String POINTCUT_METHOD_MULTIPLE_SETTING =
+            "execution(@co.kruzr.bernoulli.annotation.repeatable.SettingsRepeatable * *(..))";
+
+
+    @Pointcut(POINTCUT_METHOD_SINGLE_PERMISSION)
+    public void methodWithSinglePermission() {
     }
 
-    @Pointcut(POINTCUT_METHOD_SETTING)
-    public void methodAnnotatedWithRequiresSetting() {
+    @Pointcut(POINTCUT_METHOD_SINGLE_SETTING)
+    public void methodWithSingleSetting() {
+    }
+
+    @Pointcut(POINTCUT_METHOD_MULTIPLE_PERMISSION)
+    public void methodWithMultiplePermissions() {
+    }
+
+    @Pointcut(POINTCUT_METHOD_MULTIPLE_SETTING)
+    public void methodWithMultipleSettings() {
     }
 
     /**
@@ -44,7 +64,7 @@ public class FlowAspect {
      * This method will extract the permissions and settings required by that method and evaluate the missing
      * permissions and settings and then give a callback through the appropriate interface.
      */
-    @Around("methodAnnotatedWithRequiresPermission() || methodAnnotatedWithRequiresSetting()")
+    @Around("methodWithSinglePermission() || methodWithSingleSetting() || methodWithMultiplePermissions() || methodWithMultipleSettings()")
     public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
 
         Log.e("Bernoulli", "Entered FlowAspect weaveJoinPoint");
@@ -55,11 +75,7 @@ public class FlowAspect {
                 new FlowRequirementsExtractor(methodSignature.getMethod()).getRequirementsOfStream();
         try {
 
-            Log.e("Bernoulli", "Entered try");
-
             if (stream != null) {
-
-                Log.e("Bernoulli", "FlowAspect stream not null");
 
                 // proceeds with execution of the method if all conditions are fulfilled, else doesn't
                 if (BernoulliBank.shouldProceed(stream)) {
