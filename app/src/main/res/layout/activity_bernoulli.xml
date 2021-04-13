@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="12dp"
+    android:background="@android:color/holo_blue_bright"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/button_perm_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="GAR, disabled Proceed"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/button_setting_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimary"
+        android:text="GPS, disabled Proceed"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/button_perm_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimary"
+        android:text="Location, disabled Fail"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/button_setting_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimary"
+        android:text="AutoRotate, disabled Fail"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/textview_logs"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:padding="12dp"
+        tools:text="Sample text" />
+
+</LinearLayout>
