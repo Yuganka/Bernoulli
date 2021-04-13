@@ -1,13 +1,13 @@
 package co.kruzr.bernoulli;
 
+import android.util.Log;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import co.kruzr.bernoulli.android.BernoulliActivity;
-import co.kruzr.bernoulli.android.BernoulliFragment;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable;
@@ -24,14 +24,6 @@ class FlowRequirementsExtractor {
      * The method for which the requirements have to be extracted.
      */
     private Stream stream;
-
-    /**
-     * Whether the requirements should be extracted or not.
-     * <p>
-     * Its value is initialised in the constructor to true if the method also has an @AddStream annotation, and to
-     * false otherwise.
-     */
-    private boolean shouldEvaluateRequirements;
 
     /**
      * The list of annotations applied to the method.
@@ -54,21 +46,12 @@ class FlowRequirementsExtractor {
      * Determines whether the requirements of the method should be extracted, and if yes then initialises the stream
      * object.
      *
-     * @param method                      the method for which the requirements have to be extracted
-     * @param hashcodeIFlowStateEvaluator hashcode of the IFlowStateEvaluator interface implemented by the class
-     *                                    where this method is defined
+     * @param method the method for which the requirements have to be extracted
      */
-    public FlowRequirementsExtractor(Method method, Integer hashcodeIFlowStateEvaluator) {
+    public FlowRequirementsExtractor(Method method) {
 
-        if (method.getDeclaringClass() == BernoulliActivity.class || method.getDeclaringClass() == BernoulliFragment.class) {
-
-            shouldEvaluateRequirements = true;
-            annotationList = method.getAnnotations();
-
-            stream = new Stream(hashcodeIFlowStateEvaluator);
-
-        } else
-            shouldEvaluateRequirements = false;
+        annotationList = method.getAnnotations();
+        stream = new Stream();
     }
 
     /**
@@ -78,29 +61,27 @@ class FlowRequirementsExtractor {
      */
     public Stream getRequirementsOfStream() {
 
-        if (shouldEvaluateRequirements) {
+        Log.e("Bernoulli", annotationList.toString());
 
-            for (Annotation annotation : annotationList) {
+        for (Annotation annotation : annotationList) {
 
-                if (annotation instanceof PermissionsRepeatable)
-                    listRequiresPermissions.addAll(Arrays.asList(((PermissionsRepeatable) annotation).value()));
+            if (annotation instanceof PermissionsRepeatable)
+                listRequiresPermissions.addAll(Arrays.asList(((PermissionsRepeatable) annotation).value()));
 
-                if (annotation instanceof SettingsRepeatable)
-                    listRequiresSettings.addAll(Arrays.asList(((SettingsRepeatable) annotation).value()));
+            if (annotation instanceof SettingsRepeatable)
+                listRequiresSettings.addAll(Arrays.asList(((SettingsRepeatable) annotation).value()));
 
-                if (annotation instanceof RequiresPermission)
-                    listRequiresPermissions.add((RequiresPermission) annotation);
+            if (annotation instanceof RequiresPermission)
+                listRequiresPermissions.add((RequiresPermission) annotation);
 
-                if (annotation instanceof RequiresSetting)
-                    listRequiresSettings.add((RequiresSetting) annotation);
-            }
-
-            stream.setRequiredPermissions(listRequiresPermissions);
-            stream.setRequiredSettings(listRequiresSettings);
-
-            return stream;
+            if (annotation instanceof RequiresSetting)
+                listRequiresSettings.add((RequiresSetting) annotation);
         }
 
-        return null;
+        stream.setRequiredPermissions(listRequiresPermissions);
+        stream.setRequiredSettings(listRequiresSettings);
+
+        PrintUtils.printRequiredPermissionsAndSettings(stream);
+        return stream;
     }
 }

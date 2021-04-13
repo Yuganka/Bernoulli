@@ -8,10 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Core implementation of the Aspect Oriented Programming paradigm that we are following.
  * <p>
@@ -24,13 +20,13 @@ public class FlowAspect {
      * Defines a pointcut for the annotation RequiresPermission.
      */
     private static final String POINTCUT_METHOD_PERMISSION =
-            "execution(@co.kruzr.bernoulli.annotations.RequiresPermission * *(..))";
+            "execution(@co.kruzr.bernoulli.annotation.RequiresPermission * *(..))";
 
     /**
      * Defines a pointcut for the annotation RequiresSetting.
      */
     private static final String POINTCUT_METHOD_SETTING =
-            "execution(@co.kruzr.bernoulli.annotations.RequiresSetting * *(..))";
+            "execution(@co.kruzr.bernoulli.annotation.RequiresSetting * *(..))";
 
 
     @Pointcut(POINTCUT_METHOD_PERMISSION)
@@ -53,63 +49,38 @@ public class FlowAspect {
 
         Log.e("Bernoulli", "Entered FlowAspect weaveJoinPoint");
 
-        Object returnThis = null;
-
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
-        // Extracting all the generic interfaces implemented by the class in which this method is
-        List<Type> interfaceTypes = Arrays.asList(methodSignature.getDeclaringType().getGenericInterfaces());
+        Stream stream =
+                new FlowRequirementsExtractor(methodSignature.getMethod()).getRequirementsOfStream();
+        try {
 
-        if (interfaceTypes.contains(IFlowStateEvaluator.class)) {
+            Log.e("Bernoulli", "Entered try");
 
-            for (Type interfaceType : interfaceTypes) {
+            if (stream != null) {
 
-                Log.e("Bernoulli", "FlowAspect weaveJoinPoint " + interfaceType.toString());
+                Log.e("Bernoulli", "FlowAspect stream not null");
 
-                Integer interfaceHashCode = interfaceType.hashCode();
-
-                // If the class has implemented the IFlowStateEvaluator interface
-                if (interfaceType instanceof IFlowStateEvaluator) {
-
-                    Stream stream =
-                            new FlowRequirementsExtractor(methodSignature.getMethod(), interfaceHashCode).getRequirementsOfStream();
-
-                    try {
-
-                        if (stream != null) {
-
-                            Log.e("Bernoulli", "FlowAspect weaveJoinPoint ");
-
-                            // proceeds with execution of the method if all conditions are fulfilled, else doesn't
-                            if (BernoulliBank.shouldProceed(interfaceHashCode, stream)) {
-                                Log.e("Bernoulli", "FlowAspect weaveJoinPoint should proceed");
-                                returnThis = joinPoint.proceed();
-                            } else {
-                                Log.e("Bernoulli", "FlowAspect weaveJoinPoint should not proceed");
-                                returnThis = null;
-                            }
-
-                        } else {
-
-                            Log.e("Bernoulli", "FlowAspect weaveJoinPoint stream is null");
-                            returnThis = joinPoint.proceed();
-                        }
-
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                        returnThis = joinPoint.proceed();
-                    }
+                // proceeds with execution of the method if all conditions are fulfilled, else doesn't
+                if (BernoulliBank.shouldProceed(stream)) {
+                    Log.e("Bernoulli", "FlowAspect should proceed");
+                    return joinPoint.proceed();
+                } else {
+                    Log.e("Bernoulli", "FlowAspect should not proceed");
+                    return null;
                 }
+
+            } else {
+
+                Log.e("Bernoulli", "FlowAspect stream is null");
+                return joinPoint.proceed();
             }
 
-        } else {
-
-            Log.e("Bernoulli", "Cannot proceed - annotations have been used in an instance which is not of type " +
-                    "IFlowStateEvaluator");
-
-            returnThis = joinPoint.proceed();
+        } catch (Throwable throwable) {
+            Log.e("Bernoulli", "FlowAspect In catch");
+            Log.e("Bernoulli", throwable.getMessage());
+            throwable.printStackTrace();
+            return joinPoint.proceed();
         }
-
-        return returnThis;
     }
 }

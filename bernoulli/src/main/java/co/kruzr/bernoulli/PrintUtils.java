@@ -1,5 +1,7 @@
 package co.kruzr.bernoulli;
 
+import android.util.Log;
+
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 
@@ -11,7 +13,7 @@ class PrintUtils {
     /**
      * To print the permission and setting requirements of a method.
      */
-    public static String printRequiredPermissionsAndSettings(Stream stream){
+    public static void printRequiredPermissionsAndSettings(Stream stream){
 
         StringBuilder combined = new StringBuilder();
 
@@ -25,7 +27,7 @@ class PrintUtils {
         for (RequiresSetting setting : stream.getRequiredSettings())
             combined.append(setting.setting() + ", disabledPolicy " + setting.disabledPolicy()).append("\n");
 
-        return combined.toString();
+        Log.e("Bernoulli", "Missing " + combined.toString());
 
     }
 
