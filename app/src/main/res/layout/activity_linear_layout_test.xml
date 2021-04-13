@@ -5,19 +5,19 @@
     android:orientation="vertical"
     >
 
-  <org.android10.viewgroupperformance.component.MyLinearLayout
+  <co.kruzr.bernoulli.app.component.MyLinearLayout
       android:id="@+id/linearLayoutOne"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
 
-  <org.android10.viewgroupperformance.component.MyLinearLayout
+  <co.kruzr.bernoulli.app.component.MyLinearLayout
       android:id="@+id/linearLayoutTwo"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
 
-  <org.android10.viewgroupperformance.component.MyLinearLayout
+  <co.kruzr.bernoulli.app.component.MyLinearLayout
       android:id="@+id/linearLayoutThree"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

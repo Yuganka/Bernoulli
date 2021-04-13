@@ -2,13 +2,13 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package org.android10.viewgroupperformance.component;
+package co.kruzr.bernoulli.app.component;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import org.android10.gintonic.annotation.DebugTrace;
+import co.kruzr.bernoulli.annotation.DebugTrace;
 
 /**
  *

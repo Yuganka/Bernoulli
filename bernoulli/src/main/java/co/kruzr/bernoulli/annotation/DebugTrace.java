@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package org.android10.gintonic.annotation;
+package co.kruzr.bernoulli.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

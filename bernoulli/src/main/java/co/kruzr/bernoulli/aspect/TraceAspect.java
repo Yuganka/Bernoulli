@@ -2,10 +2,10 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package org.android10.gintonic.aspect;
+package co.kruzr.bernoulli.aspect;
 
-import org.android10.gintonic.internal.DebugLog;
-import org.android10.gintonic.internal.StopWatch;
+import co.kruzr.bernoulli.internal.DebugLog;
+import co.kruzr.bernoulli.internal.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,10 +19,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 public class TraceAspect {
 
   private static final String POINTCUT_METHOD =
-      "execution(@org.android10.gintonic.annotation.DebugTrace * *(..))";
+      "execution(@co.kruzr.bernoulli.annotation.DebugTrace * *(..))";
 
   private static final String POINTCUT_CONSTRUCTOR =
-      "execution(@org.android10.gintonic.annotation.DebugTrace *.new(..))";
+      "execution(@co.kruzr.bernoulli.annotation.DebugTrace *.new(..))";
 
   @Pointcut(POINTCUT_METHOD)
   public void methodAnnotatedWithDebugTrace() {}
@@ -55,7 +55,7 @@ public class TraceAspect {
    */
   private static String buildLogMessage(String methodName, long methodDuration) {
     StringBuilder message = new StringBuilder();
-    message.append("Gintonic --> ");
+    message.append("Bernoulli ");
     message.append(methodName);
     message.append(" --> ");
     message.append("[");

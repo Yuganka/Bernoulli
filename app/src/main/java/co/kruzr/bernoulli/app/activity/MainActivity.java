@@ -1,11 +1,11 @@
-package org.android10.viewgroupperformance.activity;
+package co.kruzr.bernoulli.app.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import org.android10.viewgroupperformance.R;
+import org.kruzr.viewgroupperformance.R;
 
 public class MainActivity extends Activity {
 

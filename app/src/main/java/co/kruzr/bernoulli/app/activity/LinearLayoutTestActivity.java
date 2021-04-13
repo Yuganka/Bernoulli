@@ -2,12 +2,12 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package org.android10.viewgroupperformance.activity;
+package co.kruzr.bernoulli.app.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import org.android10.viewgroupperformance.R;
+import org.kruzr.viewgroupperformance.R;
 
 /**
  *
