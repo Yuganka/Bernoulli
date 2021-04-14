@@ -8,6 +8,16 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.List;
+
+import co.kruzr.bernoulli.android.BernoulliActivity;
+import co.kruzr.bernoulli.android.BernoulliFragment;
+import co.kruzr.bernoulli.annotation.AttachScreen;
+import co.kruzr.bernoulli.annotation.RequiresPermission;
+import co.kruzr.bernoulli.annotation.RequiresSetting;
+
 /**
  * Core implementation of the Aspect Oriented Programming paradigm that we are following.
  * <p>
@@ -28,13 +38,23 @@ public class FlowAspect {
     private static final String POINTCUT_METHOD_SETTING =
             "execution(@co.kruzr.bernoulli.annotation.RequiresSetting * *(..))";
 
+    /**
+     * Defines a pointcut for the annotation AttachScreen.
+     */
+    private static final String POINTCUT_METHOD_ATTACH_SCREEN =
+            "execution(@co.kruzr.bernoulli.annotation.AttachScreen * *(..))";
+
 
     @Pointcut(POINTCUT_METHOD_PERMISSION)
-    public void methodAnnotatedWithRequiresPermission() {
+    private void methodAnnotatedWithRequiresPermission() {
     }
 
     @Pointcut(POINTCUT_METHOD_SETTING)
-    public void methodAnnotatedWithRequiresSetting() {
+    private void methodAnnotatedWithRequiresSetting() {
+    }
+
+    @Pointcut(POINTCUT_METHOD_ATTACH_SCREEN)
+    private void methodAnnotatedWithAttachScreen() {
     }
 
     /**
@@ -44,15 +64,38 @@ public class FlowAspect {
      * This method will extract the permissions and settings required by that method and evaluate the missing
      * permissions and settings and then give a callback through the appropriate interface.
      */
-    @Around("methodAnnotatedWithRequiresPermission() || methodAnnotatedWithRequiresSetting()")
+    @Around("methodAnnotatedWithRequiresPermission() " +
+            " || methodAnnotatedWithRequiresSetting() " +
+            " || methodAnnotatedWithAttachScreen() ")
     public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
-
-        Log.e("Bernoulli", "Entered FlowAspect weaveJoinPoint");
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
+        Log.e("Bernoulli", "Entered FlowAspect for " + methodSignature.getMethod().getName());
+
+        List<Annotation> annotationList = Arrays.asList(methodSignature.getMethod().getDeclaredAnnotations());
+
+        PrintUtils.printMethodAnnotations(annotationList);
+
+        for (Annotation annotation : annotationList) {
+
+            // don't want to return from here as we want the other annotations to also be processed
+            if (annotation.annotationType() == AttachScreen.class) {
+                doAttachActivityWork(methodSignature);
+            } else if (annotation.annotationType() == RequiresPermission.class || annotation.annotationType() == RequiresSetting.class)
+                return doRequiresSettingAndPermissionWork(methodSignature, joinPoint);
+        }
+
+        return joinPoint.proceed();
+    }
+
+
+    private Object doRequiresSettingAndPermissionWork(MethodSignature methodSignature, ProceedingJoinPoint joinPoint) throws Throwable {
+
+        Log.e("Bernoulli", "doRequiresSettingAndPermissionWork");
+
         Stream stream =
-                new FlowRequirementsExtractor(methodSignature.getMethod()).getRequirementsOfStream();
+                new FlowRequirementsExtractor(methodSignature.getMethod()).getPermissionAndSettingRequirementsOfStream();
         try {
 
             if (stream != null) {
@@ -79,5 +122,26 @@ public class FlowAspect {
             throwable.printStackTrace();
             return joinPoint.proceed();
         }
+    }
+
+    private void doAttachActivityWork(MethodSignature methodSignature) throws Throwable {
+
+        Log.e("Bernoulli", "doAttachActivityWork");
+
+        if (methodSignature.getMethod().getDeclaringClass() ==
+                BernoulliActivity.class || methodSignature.getMethod().getDeclaringClass() == BernoulliFragment.class) {
+
+            boolean hasEntered = new FlowRequirementsExtractor(methodSignature.getMethod()).hasEnteredActivity();
+
+            Log.e("Bernoulli", "AttachActivity hasEntered " + hasEntered);
+
+            if (hasEntered) {
+                CurrentScreen.setCurrentActivityHashcode(methodSignature.getClass().hashCode());
+            } else {
+                CurrentScreen.setCurrentActivityHashcode(null);
+            }
+        } else
+            Log.e("Bernoulli", "Unexpected state - AttachActivity annotation can only be applied to a " +
+                    "sub-class of BernoulliActivity or BernoulliFragment");
     }
 }

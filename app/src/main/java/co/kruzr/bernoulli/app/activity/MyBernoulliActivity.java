@@ -69,14 +69,14 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
         }
     }
 
-    @RequiresPermission(permission = Permission.GOOGLE_ACTIVITY_RECOGNITION, disabledPolicy = DisabledPolicy.PROCEED)
+    @RequiresPermission(permission = Permission.READ_CONTACTS, disabledPolicy = DisabledPolicy.PROCEED)
     private void perm1Proceed() {
 
-        textviewLogs.setText("successfully run perm GAR proceed");
-        Log.e("Bernoulli", "successfully run perm GAR proceed");
+        textviewLogs.setText("successfully run perm contact proceed");
+        Log.e("Bernoulli", "successfully run perm contact proceed");
     }
 
-    @RequiresPermission(permission = Permission.LOCATION, disabledPolicy = DisabledPolicy.FAIL)
+    @RequiresPermission(permission = Permission.FINE_LOCATION, disabledPolicy = DisabledPolicy.FAIL)
     private void perm1Fail() {
 
         textviewLogs.setText("successfully run perm location fail");

@@ -1,5 +1,10 @@
 package co.kruzr.bernoulli;
 
+import android.util.Log;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 
@@ -11,7 +16,7 @@ class PrintUtils {
     /**
      * To print the permission and setting requirements of a method.
      */
-    public static String printRequiredPermissionsAndSettings(Stream stream){
+    public static String printRequiredPermissionsAndSettings(Stream stream) {
 
         StringBuilder combined = new StringBuilder();
 
@@ -32,10 +37,11 @@ class PrintUtils {
     /**
      * To print the list of currently missing permissions and settings for the method contained in the
      * evaluatedStream object.
-     * @param evaluatedStream  containing details of the stream (i.e. method)
-     * @return                 stringified missing permissions and settings
+     *
+     * @param evaluatedStream containing details of the stream (i.e. method)
+     * @return stringified missing permissions and settings
      */
-    public static String printMissingPermissionsAndSettings(EvaluatedStream evaluatedStream){
+    public static String printMissingPermissionsAndSettings(EvaluatedStream evaluatedStream) {
 
         StringBuilder combined = new StringBuilder();
 
@@ -51,5 +57,25 @@ class PrintUtils {
 
         return combined.toString();
 
+    }
+
+    /**
+     * To print the annotations of a method.
+     */
+    public static void printMethodAnnotations(List<Annotation> annotationList) {
+
+        Log.e("Bernoulli", "Printing annotations, Size - " + annotationList.size());
+
+        for (Annotation annotation : annotationList)
+            Log.e("Bernoulli", annotation.toString());
+    }
+
+    /**
+     * To print details of the current activity.
+     */
+    public static void printCurrentActivityDetails() {
+
+        Log.e("Bernoulli", "Current Activity - " + CurrentScreen.getCurrentActivity());
+        Log.e("Bernoulli", "Current Activity Hashcode - " + CurrentScreen.getCurrentActivityHashcode());
     }
 }

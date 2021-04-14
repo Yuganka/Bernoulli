@@ -2,43 +2,35 @@ package co.kruzr.bernoulli;
 
 import android.Manifest;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * Enumerates various Android Permissions that the client may need.
  */
+@AllArgsConstructor
 public enum Permission {
 
-    LOCATION("Location", Manifest.permission.ACCESS_FINE_LOCATION, 11000),
+    FINE_LOCATION("Location", Manifest.permission.ACCESS_FINE_LOCATION, 11000),
     BACKGROUND_LOCATION("Background Location", Manifest.permission.ACCESS_BACKGROUND_LOCATION, 11001),
     GOOGLE_ACTIVITY_RECOGNITION("Activity Recognition", Manifest.permission.ACTIVITY_RECOGNITION, 11002),
 
     READ_CONTACTS("Contacts", Manifest.permission.READ_CONTACTS, 11003),
     RECORD_AUDIO("Microphone", Manifest.permission.RECORD_AUDIO, 11004),
     CALL_PHONE("Call Phone", Manifest.permission.CALL_PHONE, 11005),
+    CAMERA("Camera", Manifest.permission.CAMERA, 11006),
 
-    READ_CALL_LOG("Call Logs", Manifest.permission.READ_CALL_LOG, 11006),
-    WRITE_EXTERNAL_STORAGE("Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE, 11007);
+    READ_CALL_LOG("Call Logs", Manifest.permission.READ_CALL_LOG, 11007),
+    WRITE_EXTERNAL_STORAGE("Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE, 11008);
 
-    private String simpleName;
-    private String permissionName;
-    private int requestCode;
+    @Getter
+    private final String simpleName;
 
-    Permission(String simpleName, String permissionName, int requestCode) {
-        this.simpleName = simpleName;
-        this.permissionName = permissionName;
-        this.requestCode = requestCode;
-    }
+    @Getter
+    private final String permissionName;
 
-    public String getSimpleName() {
-        return simpleName;
-    }
-
-    public String getPermissionName() {
-        return permissionName;
-    }
-
-    public int getRequestCode() {
-        return requestCode;
-    }
+    @Getter
+    private final int requestCode;
 
     /**
      * REQUEST CODES

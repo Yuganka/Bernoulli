@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import co.kruzr.bernoulli.Permission;
+import co.kruzr.bernoulli.annotation.AttachScreen;
 import timber.log.Timber;
 
 public class BernoulliActivity extends AppCompatActivity implements PermissionsInterface {
@@ -21,6 +22,18 @@ public class BernoulliActivity extends AppCompatActivity implements PermissionsI
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         permissionsManager = new PermissionsManager(this, this);
+    }
+
+    @AttachScreen(isActive = true)
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @AttachScreen(isActive = false)
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override

@@ -18,8 +18,8 @@ class FlowStateEvaluator {
     /**
      * Evaluates whether, for a given Stream, the permissions and settings it requires have been granted / enabled.
      *
-     * @param stream   the method for which the permissions and settings need to be checked
-     * @return         an EvaluatedStream object that encapsulates the missing permissions and settings for the stream
+     * @param stream the method for which the permissions and settings need to be checked
+     * @return an EvaluatedStream object that encapsulates the missing permissions and settings for the stream
      */
     public EvaluatedStream evaluate(Stream stream) {
 
@@ -44,7 +44,7 @@ class FlowStateEvaluator {
      * @return whether the permission has been granted or not
      */
     private boolean isPermissionGranted(Permission permission) {
-        return ContextCompat.checkSelfPermission(BernoulliBank.getContext(), permission.toString()) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(BernoulliBank.getContext(), permission.getPermissionName()) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**

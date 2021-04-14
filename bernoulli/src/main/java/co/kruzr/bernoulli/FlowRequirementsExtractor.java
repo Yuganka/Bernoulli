@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import lombok.Getter;
@@ -55,7 +56,7 @@ class FlowRequirementsExtractor {
      *
      * @return the updated stream object if the requirements should be evaluated, null otherwise
      */
-    public Stream getRequirementsOfStream() {
+    public Stream getPermissionAndSettingRequirementsOfStream() {
 
         for (Annotation annotation : annotationList) {
 
@@ -70,5 +71,21 @@ class FlowRequirementsExtractor {
         stream.setRequiredSettings(listRequiresSettings);
 
         return stream;
+    }
+
+    /**
+     * Determines whether we have entered or exited the activity.
+     *
+     * @return true if we have entered the activity, false otherwise
+     */
+    public boolean hasEnteredActivity() {
+
+        boolean hasEntered = false;
+
+        for (Annotation annotation : annotationList)
+            if (annotation instanceof AttachScreen)
+                hasEntered = ((AttachScreen) annotation).isActive();
+
+        return hasEntered;
     }
 }
