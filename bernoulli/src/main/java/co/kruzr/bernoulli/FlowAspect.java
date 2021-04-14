@@ -68,6 +68,8 @@ public class FlowAspect {
             " || methodAnnotatedWithAttachScreen() ")
     public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
 
+        boolean methodShouldExecute = true;
+
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
         Log.e("Bernoulli", "Entered FlowAspect for " + methodSignature.getMethod().getName());
@@ -82,13 +84,17 @@ public class FlowAspect {
             if (annotation.annotationType() == AttachScreen.class) {
                 doAttachActivityWork(methodSignature);
             } else if (annotation.annotationType() == RequiresPermission.class || annotation.annotationType() == RequiresSetting.class)
-                return doRequiresSettingAndPermissionWork(methodSignature, joinPoint);
+                methodShouldExecute &= doRequiresSettingAndPermissionWork(methodSignature, joinPoint) != null;
         }
 
-        return joinPoint.proceed();
+        if (methodShouldExecute)
+            return joinPoint.proceed();
+        else
+            return null;
     }
 
 
+    // this method returning null implies the method should not be executed.
     private Object doRequiresSettingAndPermissionWork(MethodSignature methodSignature, ProceedingJoinPoint joinPoint) throws Throwable {
 
         Log.e("Bernoulli", "doRequiresSettingAndPermissionWork");
@@ -123,6 +129,7 @@ public class FlowAspect {
         }
     }
 
+    // this method returning null implies the method should not be executed.
     private void doAttachActivityWork(MethodSignature methodSignature) throws Throwable {
 
         Log.e("Bernoulli", "doAttachActivityWork");
