@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import co.kruzr.bernoulli.android.BernoulliActivity;
-import co.kruzr.bernoulli.android.BernoulliFragment;
 import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
@@ -128,8 +127,7 @@ public class FlowAspect {
 
         Log.e("Bernoulli", "doAttachActivityWork");
 
-        if (methodSignature.getMethod().getDeclaringClass() ==
-                BernoulliActivity.class || methodSignature.getMethod().getDeclaringClass() == BernoulliFragment.class) {
+        if (methodSignature.getMethod().getDeclaringClass() == BernoulliActivity.class) {
 
             boolean hasEntered = new FlowRequirementsExtractor(methodSignature.getMethod()).hasEnteredActivity();
 
@@ -142,6 +140,6 @@ public class FlowAspect {
             }
         } else
             Log.e("Bernoulli", "Unexpected state - AttachActivity annotation can only be applied to a " +
-                    "sub-class of BernoulliActivity or BernoulliFragment");
+                    "sub-class of BernoulliActivity");
     }
 }
