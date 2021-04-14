@@ -1,7 +1,6 @@
 package co.kruzr.bernoulli.annotation;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -16,7 +15,7 @@ import co.kruzr.bernoulli.Permission;
  * A method can apply this annotation only once.
  */
 @Target({ElementType.METHOD})
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresPermission {
 
     /**
