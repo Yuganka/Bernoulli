@@ -16,6 +16,7 @@ import co.kruzr.bernoulli.android.BernoulliActivity;
 import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.desilting.Dam;
 
 /**
  * Core implementation of the Aspect Oriented Programming paradigm that we are following.
@@ -105,20 +106,24 @@ public class FlowAspect {
 
             if (stream != null) {
 
-                Log.e("Bernoulli", "FlowAspect stream not null");
+                Dam dam = new FlowStateEvaluator().evaluate(stream);
 
-                // proceeds with execution of the method if all conditions are fulfilled, else doesn't
-                if (BernoulliBank.shouldProceed(stream)) {
-                    Log.e("Bernoulli", "FlowAspect should proceed");
-                    return joinPoint.proceed();
-                } else {
-                    Log.e("Bernoulli", "FlowAspect should not proceed");
-                    return null;
+                Log.e("Bernoulli", "FlowAspect Stream " + dam.getStreamFlowState());
+
+                switch (dam.getStreamFlowState()) {
+
+                    case FLOW:
+                        return joinPoint.proceed();
+                    case STAGNATE:
+                        return null;
+                    case CHOKED: // todo handle this case
+                    default:
+                        return null;
                 }
 
             } else {
 
-                Log.e("Bernoulli", "FlowAspect stream is null, proceeding");
+                Log.e("Bernoulli", "FlowAspect Stream null, proceeding");
                 return joinPoint.proceed();
             }
 
@@ -140,11 +145,11 @@ public class FlowAspect {
 
             Log.e("Bernoulli", "AttachActivity hasEntered " + hasEntered);
 
-            if (hasEntered) {
+          /*  if (hasEntered) {
                 CurrentScreen.setCurrentActivityHashcode(methodSignature.getClass().hashCode());
             } else {
                 CurrentScreen.setCurrentActivityHashcode(null);
-            }
+            }*/
         } else
             Log.e("Bernoulli", "Unexpected state - AttachActivity annotation can only be applied to a " +
                     "sub-class of BernoulliActivity");

@@ -5,8 +5,12 @@ import android.content.pm.PackageManager;
 
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.desilting.Dam;
 import co.kruzr.bernoulli.managers.GPSManager;
 
 /**
@@ -21,20 +25,55 @@ class FlowStateEvaluator {
      * @param stream the method for which the permissions and settings need to be checked
      * @return an EvaluatedStream object that encapsulates the missing permissions and settings for the stream
      */
-    public EvaluatedStream evaluate(Stream stream) {
+    public Dam evaluate(Stream stream) {
 
-        EvaluatedStream evaluatedStream = new EvaluatedStream(stream);
+        Dam dam;
 
-        for (RequiresPermission permission : stream.getRequiredPermissions()) {
-            if (!isPermissionGranted(permission.permission()) && permission.disabledPolicy() == DisabledPolicy.FAIL)
-                evaluatedStream.getMissingPermissions().add(permission.permission());
-        }
+        boolean shouldFlow = true;
 
-        for (RequiresSetting settings : stream.getRequiredSettings())
-            if (!isSettingsGranted(settings.setting()) && settings.disabledPolicy() == DisabledPolicy.FAIL)
-                evaluatedStream.getMissingSettings().add(settings.setting());
+        List<RequiresPermission> askPermissions = new ArrayList<>();
+        List<RequiresSetting> askSettings = new ArrayList<>();
 
-        return evaluatedStream;
+        for (RequiresPermission permission : stream.getRequiredPermissions())
+            if (!isPermissionGranted(permission.permission()))
+
+                switch (permission.disabledPolicy()) {
+
+                    case PROCEED: // don't need to do nothing
+                        break;
+                    case FAIL:
+                        shouldFlow = false;
+                        break;
+                    case ASK_IF_MISSING:
+                    case ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED:
+                        askPermissions.add(permission);
+                        break;
+                }
+
+        for (RequiresSetting setting : stream.getRequiredSettings())
+            if (!isSettingsGranted(setting.setting()))
+
+                switch (setting.disabledPolicy()) {
+
+                    case PROCEED: // don't need to do nothing
+                        break;
+                    case FAIL:
+                        shouldFlow = false;
+                        break;
+                    case ASK_IF_MISSING:
+                    case ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED:
+                        askSettings.add(setting);
+                        break;
+                }
+
+        if (askPermissions.size() > 0 || askSettings.size() > 0) {
+            dam = new Dam(StreamFlowState.CHOKED);
+            dam.setAskPermissions(askPermissions);
+            dam.setAskSettings(askSettings);
+        } else
+            dam = new Dam(shouldFlow ? StreamFlowState.FLOW : StreamFlowState.STAGNATE);
+
+        return dam;
     }
 
     /**

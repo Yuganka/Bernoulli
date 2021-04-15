@@ -37,22 +37,6 @@ class BernoulliBank {
     }
 
     /**
-     * Given a method that is using Bernoulli annotation, this calculates whether we can proceed with the
-     * method's normal functioning.
-     * <p>
-     * If we can't, we send the onFailure callback to the relevant IFlowStateEvaluator interface.
-     *
-     * @param stream the method whose requirements have to be evaluated
-     * @return true if we can proceed with the normal functioning of the method, false otherwise
-     */
-    static boolean shouldProceed(Stream stream) {
-
-        EvaluatedStream evaluatedStream = new FlowStateEvaluator().evaluate(stream);
-
-        return evaluatedStream.getMissingPermissions().size() == 0 && evaluatedStream.getMissingSettings().size() == 0;
-    }
-
-    /**
      * Supplies a context that the library may need under certain circumstances.
      */
     public static Context getContext() {

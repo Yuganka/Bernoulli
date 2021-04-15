@@ -1,22 +1,22 @@
-package co.kruzr.bernoulli.android;
+package co.kruzr.bernoulli.android
 
-import co.kruzr.bernoulli.Permission;
+import co.kruzr.bernoulli.Permission
 
-interface PermissionsInterface {
+internal interface PermissionsInterface {
 
-    void onPermissionGranted(Permission permission);
+    fun onPermissionGranted(permission: Permission?)
 
-    void onPermissionDenied(Permission permission);
+    fun onPermissionDenied(permission: Permission?)
 
-    void onNeverShowAgainClicked(Permission permission);
+    fun onNeverShowAgainClicked(permission: Permission?)
 
-    void onPermissionRationalePositiveClick(Permission permission);
+    fun onPermissionRationalePositiveClick(permission: Permission?)
 
-    void onPermissionRationaleNegativeClick(Permission permission);
+    fun onPermissionRationaleNegativeClick(permission: Permission?)
 
-    void onRedirectToSystemSettingsPositiveClick();
+    fun onRedirectToSystemSettingsPositiveClick()
 
-    void onRedirectToSystemSettingsNegativeClick();
+    fun onRedirectToSystemSettingsNegativeClick()
 
-    void onAllPermissionsGranted();
+    fun onAllPermissionsGranted()
 }

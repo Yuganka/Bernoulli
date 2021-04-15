@@ -27,4 +27,9 @@ public @interface RequiresPermission {
      * Expected behaviour if the permission has not been granted.
      */
     DisabledPolicy disabledPolicy() default DisabledPolicy.PROCEED;
+
+    /**
+     * The rationale message that should be shown if disabledPolicy is ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED.
+     */
+    String rationaleMessage() default "";
 }

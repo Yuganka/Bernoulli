@@ -6,5 +6,7 @@ package co.kruzr.bernoulli;
 public enum DisabledPolicy {
 
     PROCEED,
-    FAIL
+    FAIL,
+    ASK_IF_MISSING,
+    ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED;
 }

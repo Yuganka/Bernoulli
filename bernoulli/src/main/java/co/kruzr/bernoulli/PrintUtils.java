@@ -7,6 +7,7 @@ import java.util.List;
 
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.desilting.Dam;
 
 /**
  * Class to simplify printing.
@@ -38,25 +39,24 @@ class PrintUtils {
      * To print the list of currently missing permissions and settings for the method contained in the
      * evaluatedStream object.
      *
-     * @param evaluatedStream containing details of the stream (i.e. method)
+     * @param dam containing details of the obstructions in the stream (i.e. method)
      * @return stringified missing permissions and settings
      */
-    public static String printMissingPermissionsAndSettings(EvaluatedStream evaluatedStream) {
+    public static String printMissingPermissionsAndSettings(Dam dam) {
 
         StringBuilder combined = new StringBuilder();
 
         combined.append("Permissions - ").append("\n");
 
-        for (Permission perm : evaluatedStream.getMissingPermissions())
-            combined.append(perm).append("\n");
+        for (RequiresPermission perm : dam.getAskPermissions())
+            combined.append(perm.permission()).append("\n");
 
         combined.append("\nSettings\n");
 
-        for (Settings setting : evaluatedStream.getMissingSettings())
+        for (RequiresSetting setting : dam.getAskSettings())
             combined.append(setting).append("\n");
 
         return combined.toString();
-
     }
 
     /**
