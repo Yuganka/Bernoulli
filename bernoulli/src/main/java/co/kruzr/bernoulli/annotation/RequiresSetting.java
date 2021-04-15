@@ -5,8 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import co.kruzr.bernoulli.DisabledPolicy;
 import co.kruzr.bernoulli.Settings;
+import co.kruzr.bernoulli.SettingsDisabledPolicy;
 
 /***
  * An annotation that encapsulates the setting requirements of a method, and the expected behaviour when that setting
@@ -26,5 +26,10 @@ public @interface RequiresSetting {
     /**
      * Expected behaviour if the setting is disabled.
      */
-    DisabledPolicy disabledPolicy() default DisabledPolicy.PROCEED;
+    SettingsDisabledPolicy settingsDisabledPolicy() default SettingsDisabledPolicy.PROCEED;
+
+    /**
+     * The rationale message that should be shown if specified as such in settingsDisabledPolicy.
+     */
+    String rationaleMessage() default "";
 }

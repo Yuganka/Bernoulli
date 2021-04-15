@@ -37,15 +37,22 @@ class FlowStateEvaluator {
         for (RequiresPermission permission : stream.getRequiredPermissions())
             if (!isPermissionGranted(permission.permission()))
 
-                switch (permission.disabledPolicy()) {
+                switch (permission.permissionDisabledPolicy()) {
 
                     case PROCEED: // don't need to do nothing
                         break;
+
                     case FAIL:
                         shouldFlow = false;
                         break;
-                    case ASK_IF_MISSING:
-                    case ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED:
+
+                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_PROCEED:
+                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_FAIL:
+                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_SHOW_RATIONALE:
+                    case IF_NEVER_SHOW_AGAIN_THEN_PROCEED:
+                    case IF_NEVER_SHOW_AGAIN_THEN_FAIL:
+                    case IF_MISSING_THEN_ASK:
+                    case IF_NEVER_SHOW_AGAIN_THEN_REDIRECT_TO_SETTINGS_AFTER_RATIONALE:
                         askPermissions.add(permission);
                         break;
                 }
@@ -53,15 +60,22 @@ class FlowStateEvaluator {
         for (RequiresSetting setting : stream.getRequiredSettings())
             if (!isSettingsGranted(setting.setting()))
 
-                switch (setting.disabledPolicy()) {
+                switch (setting.settingsDisabledPolicy()) {
 
                     case PROCEED: // don't need to do nothing
                         break;
+
                     case FAIL:
                         shouldFlow = false;
                         break;
-                    case ASK_IF_MISSING:
-                    case ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED:
+
+                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE:
+                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE:
+                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_PROCEED:
+                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_FAIL:
+                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE_IF_DENIED_THEN_PROCEED:
+                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE_IF_DENIED_THEN_FAIL:
+                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_REDIRECT_TO_SETTINGS:
                         askSettings.add(setting);
                         break;
                 }

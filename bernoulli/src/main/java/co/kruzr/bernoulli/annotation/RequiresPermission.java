@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import co.kruzr.bernoulli.DisabledPolicy;
+import co.kruzr.bernoulli.PermissionDisabledPolicy;
 import co.kruzr.bernoulli.Permission;
 
 /***
@@ -26,10 +26,10 @@ public @interface RequiresPermission {
     /**
      * Expected behaviour if the permission has not been granted.
      */
-    DisabledPolicy disabledPolicy() default DisabledPolicy.PROCEED;
+    PermissionDisabledPolicy permissionDisabledPolicy() default PermissionDisabledPolicy.PROCEED;
 
     /**
-     * The rationale message that should be shown if disabledPolicy is ASK_IF_MISSING_AND_SHOW_RATIONALE_IF_DENIED.
+     * The rationale message that should be shown if specified as such in permissionDisabledPolicy.
      */
     String rationaleMessage() default "";
 }

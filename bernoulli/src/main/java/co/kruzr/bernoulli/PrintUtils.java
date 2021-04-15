@@ -24,12 +24,12 @@ class PrintUtils {
         combined.append("Permissions - ").append("\n");
 
         for (RequiresPermission perm : stream.getRequiredPermissions())
-            combined.append(perm.permission() + ", disabledPolicy " + perm.disabledPolicy()).append("\n");
+            combined.append(perm.permission() + ", disabledPolicy " + perm.permissionDisabledPolicy()).append("\n");
 
         combined.append("\nSettings\n");
 
         for (RequiresSetting setting : stream.getRequiredSettings())
-            combined.append(setting.setting() + ", disabledPolicy " + setting.disabledPolicy()).append("\n");
+            combined.append(setting.setting() + ", disabledPolicy " + setting.settingsDisabledPolicy()).append("\n");
 
         return combined.toString();
 

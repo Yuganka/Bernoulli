@@ -10,9 +10,10 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import co.kruzr.bernoulli.DisabledPolicy;
+import co.kruzr.bernoulli.PermissionDisabledPolicy;
 import co.kruzr.bernoulli.Permission;
 import co.kruzr.bernoulli.Settings;
+import co.kruzr.bernoulli.SettingsDisabledPolicy;
 import co.kruzr.bernoulli.android.BernoulliActivity;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
@@ -69,14 +70,14 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
         }
     }
 
-    @RequiresPermission(permission = Permission.READ_CONTACTS, disabledPolicy = DisabledPolicy.PROCEED)
+    @RequiresPermission(permission = Permission.READ_CONTACTS, permissionDisabledPolicy = PermissionDisabledPolicy.PROCEED)
     private void perm1Proceed() {
 
         textviewLogs.setText("successfully run perm contact proceed");
         Log.e("Bernoulli", "successfully run perm contact proceed");
     }
 
-    @RequiresPermission(permission = Permission.FINE_LOCATION, disabledPolicy = DisabledPolicy.FAIL)
+    @RequiresPermission(permission = Permission.FINE_LOCATION, permissionDisabledPolicy = PermissionDisabledPolicy.FAIL)
     private void perm1Fail() {
 
         textviewLogs.setText("successfully run perm location fail");
@@ -84,7 +85,7 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
         Log.e("Bernoulli", "successfully run perm location fail");
     }
 
-    @RequiresSetting(setting = Settings.GPS, disabledPolicy = DisabledPolicy.PROCEED)
+    @RequiresSetting(setting = Settings.GPS, settingsDisabledPolicy = SettingsDisabledPolicy.PROCEED)
     private void setting1Proceed() {
 
         textviewLogs.setText("successfully run setting GPS proceed");
@@ -92,7 +93,7 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
         Log.e("Bernoulli", "successfully run setting GPS proceed");
     }
 
-    @RequiresSetting(setting = Settings.AUTO_ROTATE, disabledPolicy = DisabledPolicy.FAIL)
+    @RequiresSetting(setting = Settings.AUTO_ROTATE, settingsDisabledPolicy = SettingsDisabledPolicy.FAIL)
     private void setting2Fail() {
 
         textviewLogs.setText("successfully run setting AutoRotate fail");
