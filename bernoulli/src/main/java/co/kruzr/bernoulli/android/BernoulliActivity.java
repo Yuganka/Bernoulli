@@ -1,92 +1,55 @@
 package co.kruzr.bernoulli.android;
 
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import co.kruzr.bernoulli.Permission;
-import timber.log.Timber;
+import co.kruzr.bernoulli.CurrentScreen;
+import co.kruzr.bernoulli.annotation.AttachScreen;
 
-public class BernoulliActivity extends AppCompatActivity implements PermissionsInterface {
-
-    private PermissionsManager permissionsManager;
+public class BernoulliActivity extends AppCompatActivity {
 
     @CallSuper
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        permissionsManager = new PermissionsManager(this, this);
+    }
+
+    @AttachScreen(isActive = true)
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("Bernoulli", "BA Hashcode " + hashCode());
+        CurrentScreen.setCurrentActivity(this);
+        CurrentScreen.setCurrentActivityHashcode(this.hashCode());
+    }
+
+    @AttachScreen(isActive = false)
+    @Override
+    public void onPause() {
+        super.onPause();
+        CurrentScreen.setCurrentActivity(null);
+        CurrentScreen.setCurrentActivityHashcode(null);
     }
 
     @Override
-    @RequiresApi(23)
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Timber.e("onRequestPermissionsResult " + permissions);
-
-        Permission permission = permissionsManager.getPermissionFromRequestCode(requestCode);
-
-        if (permission != null) {
-
-            if (grantResults.length > 0) {
-
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                    if (shouldShowRequestPermissionRationale(permission.getPermissionName()))
-                        onPermissionDenied(permission);
-                    else
-                        onNeverShowAgainClicked(permission);
-
-                } else
-                    onPermissionGranted(permission);
-            }
-        }
+        Log.e("Bernoulli", "BA onRequestPermissionsResult");
     }
 
+    public void askPermissions(String[] permissionStringArray, Integer requestCode) {
 
-    @Override
-    public final void onPermissionGranted(Permission permission) {
-
-    }
-
-    @Override
-    public void onPermissionDenied(Permission permission) {
-
-    }
-
-    @Override
-    public void onNeverShowAgainClicked(Permission permission) {
-
-    }
-
-    @Override
-    public void onPermissionRationalePositiveClick(Permission permission) {
-
-    }
-
-    @Override
-    public void onPermissionRationaleNegativeClick(Permission permission) {
-
-    }
-
-    @Override
-    public void onRedirectToSystemSettingsPositiveClick() {
-
-    }
-
-    @Override
-    public void onRedirectToSystemSettingsNegativeClick() {
-
-    }
-
-    @Override
-    public void onAllPermissionsGranted() {
-
+        ActivityCompat.requestPermissions(
+                this,
+                permissionStringArray,
+                requestCode
+        );
     }
 }

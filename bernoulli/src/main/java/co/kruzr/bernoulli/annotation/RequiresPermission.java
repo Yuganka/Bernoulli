@@ -1,24 +1,21 @@
 package co.kruzr.bernoulli.annotation;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import co.kruzr.bernoulli.DisabledPolicy;
+import co.kruzr.bernoulli.PermissionDisabledPolicy;
 import co.kruzr.bernoulli.Permission;
-import co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable;
 
 /***
  * An annotation that encapsulates the permission requirements of a method, and the expected behaviour in the absence
  * of the permission.
  *
- * A method can apply multiple annotations of this type.
+ * A method can apply this annotation only once.
  */
-@Repeatable(PermissionsRepeatable.class)
 @Target({ElementType.METHOD})
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresPermission {
 
     /**
@@ -29,5 +26,11 @@ public @interface RequiresPermission {
     /**
      * Expected behaviour if the permission has not been granted.
      */
-    DisabledPolicy disabledPolicy() default DisabledPolicy.PROCEED;
+    PermissionDisabledPolicy permissionDisabledPolicy() default PermissionDisabledPolicy.PROCEED;
+
+    /**
+     * The request code for the permission, only used if permissionDisabledPolicy is PermissionDisabledPolicy
+     * .ASK_IF_MISSING.
+     */
+    int permissionRequestCode() default 1;
 }

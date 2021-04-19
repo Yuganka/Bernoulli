@@ -1,24 +1,19 @@
 package co.kruzr.bernoulli.annotation;
 
 import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import co.kruzr.bernoulli.DisabledPolicy;
 import co.kruzr.bernoulli.Settings;
-import co.kruzr.bernoulli.annotation.repeatable.SettingsRepeatable;
+import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
 
 /***
  * An annotation that encapsulates the setting requirements of a method, and the expected behaviour when that setting
  * is disabled.
  *
- * A method can apply multiple annotations of this type.
+ * A method can apply this annotation only once.
  */
-@Repeatable(SettingsRepeatable.class)
-@Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresSetting {
@@ -29,7 +24,12 @@ public @interface RequiresSetting {
     Settings setting();
 
     /**
-     * Expected behaviour if the setting is disabled.
+     * Whether the setting should be enabled.
      */
-    DisabledPolicy disabledPolicy() default DisabledPolicy.PROCEED;
+    boolean shouldBeEnabled() default true;
+
+    /**
+     * Expected behaviour if the setting state mismatches the requirement.
+     */
+    SettingsStateMismatchPolicy settingsStateMismatchPolicy() default SettingsStateMismatchPolicy.PROCEED;
 }

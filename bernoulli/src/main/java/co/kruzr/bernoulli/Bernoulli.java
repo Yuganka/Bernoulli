@@ -26,30 +26,16 @@ public class Bernoulli {
      */
     private static volatile Bernoulli bernoulliInstance;
 
-    private BernoulliBank bernoulliBank;
-
     /**
      * Must be called in the Application class.
      */
-    public static Bernoulli startFlowing(Application application) {
+    public static void startFlowing(Application application) {
 
         if (bernoulliInstance == null)
             bernoulliInstance = new Bernoulli(application.getApplicationContext());
-
-        return bernoulliInstance;
     }
 
     private Bernoulli(Context context) {
-        bernoulliBank = BernoulliBank.getBank(context);
-    }
-
-    /**
-     * Should be called by each distinct class where Bernoulli annotations will be used.
-     *
-     * @param iFlowStateEvaluator the IFlowStateEvaluator interface that the class must implement in order to use
-     *                            Bernoulli annotations within itself
-     */
-    public void createRiver(IFlowStateEvaluator iFlowStateEvaluator) {
-        bernoulliBank.addRiverBank(iFlowStateEvaluator);
+        BernoulliBank.setContext(context);
     }
 }

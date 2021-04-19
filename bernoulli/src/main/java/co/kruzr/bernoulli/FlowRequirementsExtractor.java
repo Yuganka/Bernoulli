@@ -1,13 +1,12 @@
 package co.kruzr.bernoulli;
 
-import android.util.Log;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable;
@@ -23,12 +22,13 @@ class FlowRequirementsExtractor {
     /**
      * The method for which the requirements have to be extracted.
      */
-    private Stream stream;
+    private final Stream stream;
+
 
     /**
      * The list of annotations applied to the method.
      */
-    private Annotation[] annotationList;
+    private final Annotation[] annotationList;
 
     /**
      * The list of permissions required by the method.
@@ -59,29 +59,40 @@ class FlowRequirementsExtractor {
      *
      * @return the updated stream object if the requirements should be evaluated, null otherwise
      */
-    public Stream getRequirementsOfStream() {
-
-        Log.e("Bernoulli", annotationList.toString());
+    public Stream getPermissionAndSettingRequirementsOfStream() {
 
         for (Annotation annotation : annotationList) {
-
-            if (annotation instanceof PermissionsRepeatable)
-                listRequiresPermissions.addAll(Arrays.asList(((PermissionsRepeatable) annotation).value()));
-
-            if (annotation instanceof SettingsRepeatable)
-                listRequiresSettings.addAll(Arrays.asList(((SettingsRepeatable) annotation).value()));
 
             if (annotation instanceof RequiresPermission)
                 listRequiresPermissions.add((RequiresPermission) annotation);
 
             if (annotation instanceof RequiresSetting)
                 listRequiresSettings.add((RequiresSetting) annotation);
+
+            if (annotation instanceof PermissionsRepeatable)
+                listRequiresPermissions.addAll(Arrays.asList(((PermissionsRepeatable) annotation).value()));
+
+            if (annotation instanceof SettingsRepeatable)
+                listRequiresSettings.addAll(Arrays.asList(((SettingsRepeatable) annotation).value()));
         }
 
         stream.setRequiredPermissions(listRequiresPermissions);
         stream.setRequiredSettings(listRequiresSettings);
 
-        PrintUtils.printRequiredPermissionsAndSettings(stream);
         return stream;
+    }
+
+    /**
+     * Determines whether we have entered or exited the activity.
+     *
+     * @return true if we have entered the activity, false otherwise
+     */
+    public boolean hasEnteredActivity() {
+
+        for (Annotation annotation : annotationList)
+            if (annotation instanceof AttachScreen)
+                return ((AttachScreen) annotation).isActive();
+
+        return false;
     }
 }
