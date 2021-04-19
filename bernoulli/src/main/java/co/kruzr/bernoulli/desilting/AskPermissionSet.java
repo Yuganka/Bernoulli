@@ -16,15 +16,15 @@ public class AskPermissionSet {
     // start asking for permissions for a specific method
     public void begin() {
 
-        if (CurrentScreen.getCurrentActivity() != null)
+        if (CurrentScreen.INSTANCE.getCurrentActivity() != null)
 
             if (Build.VERSION.SDK_INT >= 23) {
 
-                CurrentScreen.getCurrentActivity().askPermissions(
+                CurrentScreen.INSTANCE.getCurrentActivity().askPermissions(
                         new String[]{requiresPermission.get(0).permission().getPermissionName()},
                         requiresPermission.get(0).permissionRequestCode());
 
-                CurrentScreen.setCurrentlyProcessingPermission(requiresPermission.get(0));
+                CurrentScreen.INSTANCE.setCurrentlyProcessingPermission(requiresPermission.get(0));
             }
     }
 

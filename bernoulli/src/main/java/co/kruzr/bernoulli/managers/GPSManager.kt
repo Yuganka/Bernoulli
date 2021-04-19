@@ -1,34 +1,34 @@
-package co.kruzr.bernoulli.managers;
+package co.kruzr.bernoulli.managers
 
-import android.provider.Settings;
-
-import co.kruzr.bernoulli.BernoulliBank;
+import android.content.Context
+import android.provider.Settings
+import android.provider.Settings.SettingNotFoundException
 
 /**
  * A class to perform GPS related checks.
  */
-public class GPSManager {
+internal class GPSManager constructor(private val context: Context){
 
     /**
      * @return true if the GPS is ON, else false
      */
-    public boolean isGPSTurnedOn() {
+    val isGPSTurnedOn: Boolean
 
-        boolean returnValue = false;
+        get() {
 
-        int locationMode = 0;
+            var returnValue = false
+            var locationMode = 0
 
-        try {
-            locationMode = Settings.Secure.getInt(BernoulliBank.getContext().getContentResolver(), Settings.Secure.LOCATION_MODE);
+            try {
+                locationMode = Settings.Secure.getInt(context.contentResolver,
+                        Settings.Secure.LOCATION_MODE)
+            } catch (e: SettingNotFoundException) {
+                e.printStackTrace()
+                returnValue = false
+            }
 
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-            returnValue = false;
+            if (locationMode != Settings.Secure.LOCATION_MODE_OFF) returnValue = true
+
+            return returnValue
         }
-
-        if (locationMode != Settings.Secure.LOCATION_MODE_OFF)
-            returnValue = true;
-
-        return returnValue;
-    }
 }

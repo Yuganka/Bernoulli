@@ -24,8 +24,8 @@ public enum Permission {
     WRITE_EXTERNAL_STORAGE("Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     @Getter
-    private final String simpleName;
+    public final String simpleName;
 
     @Getter
-    private final String permissionName;
+    public final String permissionName;
 }

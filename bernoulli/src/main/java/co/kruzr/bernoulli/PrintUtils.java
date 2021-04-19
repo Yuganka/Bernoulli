@@ -75,8 +75,8 @@ class PrintUtils {
      */
     public static void printCurrentActivityDetails() {
 
-        Log.e("Bernoulli", "Current Activity - " + CurrentScreen.getCurrentActivity());
-        Log.e("Bernoulli", "Current Activity Hashcode - " + CurrentScreen.getCurrentActivityHashcode());
+        Log.e("Bernoulli", "Current Activity - " + CurrentScreen.INSTANCE.getCurrentActivity());
+        Log.e("Bernoulli", "Current Activity Hashcode - " + CurrentScreen.INSTANCE.getCurrentActivityHashcode());
     }
 
     private String getCombinedString(List<Permission> listMissingPerms,

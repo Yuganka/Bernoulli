@@ -25,16 +25,16 @@ public class BernoulliActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.e("Bernoulli", "BA Hashcode " + hashCode());
-        CurrentScreen.setCurrentActivity(this);
-        CurrentScreen.setCurrentActivityHashcode(this.hashCode());
+        CurrentScreen.INSTANCE.setCurrentActivity(this);
+        CurrentScreen.INSTANCE.setCurrentActivityHashcode(this.hashCode());
     }
 
     @AttachScreen(isActive = false)
     @Override
     public void onPause() {
         super.onPause();
-        CurrentScreen.setCurrentActivity(null);
-        CurrentScreen.setCurrentActivityHashcode(null);
+        CurrentScreen.INSTANCE.setCurrentActivity(null);
+        CurrentScreen.INSTANCE.setCurrentActivityHashcode(null);
     }
 
     @Override

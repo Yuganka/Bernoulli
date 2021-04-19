@@ -1,44 +1,27 @@
-package co.kruzr.bernoulli.managers;
+package co.kruzr.bernoulli.managers
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 
-import co.kruzr.bernoulli.BernoulliBank;
+class NetworkManager constructor(private val context: Context){
 
-public class NetworkManager {
+    private val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    private final ConnectivityManager connectivityManager;
-    private NetworkInfo networkInfo;
+    private var networkInfo: NetworkInfo? = null
 
-    public NetworkManager() {
+    val isInternetAvailable: Boolean
+        get() = connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnectedOrConnecting
 
-        connectivityManager =
-                (ConnectivityManager) BernoulliBank.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
+    val isWifiAvailable: Boolean
+        get() {
+            networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+            return if (networkInfo != null) networkInfo!!.isConnected else false
+        }
 
-    public boolean isInternetAvailable() {
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
-
-    public boolean isWifiAvailable() {
-
-        networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        if (networkInfo != null)
-            return networkInfo.isConnected();
-        else
-            return false;
-    }
-
-    public boolean isMobileInternetAvailable() {
-
-        networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-        if (networkInfo != null)
-            return networkInfo.isConnected();
-        else
-            return false;
-    }
+    val isMobileInternetAvailable: Boolean
+        get() {
+            networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+            return if (networkInfo != null) networkInfo!!.isConnected else false
+        }
 }

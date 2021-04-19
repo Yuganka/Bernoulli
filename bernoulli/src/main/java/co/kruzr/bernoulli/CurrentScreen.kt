@@ -1,26 +1,26 @@
-package co.kruzr.bernoulli;
+package co.kruzr.bernoulli
 
-import co.kruzr.bernoulli.android.BernoulliActivity;
-import co.kruzr.bernoulli.annotation.RequiresPermission;
-import co.kruzr.bernoulli.annotation.RequiresSetting;
-import lombok.Getter;
-import lombok.Setter;
+import co.kruzr.bernoulli.android.BernoulliActivity
+import co.kruzr.bernoulli.annotation.RequiresPermission
+import co.kruzr.bernoulli.annotation.RequiresSetting
+import lombok.Getter
+import lombok.Setter
 
-public class CurrentScreen {
-
-    @Getter
-    @Setter
-    private static Integer currentActivityHashcode;
+internal object CurrentScreen {
 
     @Getter
     @Setter
-    private static BernoulliActivity currentActivity;
+    var currentActivityHashcode: Int? = null
 
     @Getter
     @Setter
-    private static RequiresPermission currentlyProcessingPermission;
+    var currentActivity: BernoulliActivity? = null
 
     @Getter
     @Setter
-    private static RequiresSetting currentlyProcessingSetting;
+    var currentlyProcessingPermission: RequiresPermission? = null
+
+    @Getter
+    @Setter
+    var currentlyProcessingSetting: RequiresSetting? = null
 }
