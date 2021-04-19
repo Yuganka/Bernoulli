@@ -2,6 +2,7 @@ package co.kruzr.bernoulli;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 
 import androidx.core.content.ContextCompat;
 
@@ -12,6 +13,7 @@ import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.desilting.Dam;
 import co.kruzr.bernoulli.managers.GPSManager;
+import co.kruzr.bernoulli.managers.NetworkManager;
 
 /**
  * This class is responsible for evaluating the actual state of the permission and setting requirements for a given
@@ -32,9 +34,10 @@ class FlowStateEvaluator {
         boolean shouldFlow = true;
 
         List<RequiresPermission> askPermissions = new ArrayList<>();
-        List<RequiresSetting> askSettings = new ArrayList<>();
+        List<RequiresSetting> showSettingsDialog = new ArrayList<>();
 
         for (RequiresPermission permission : stream.getRequiredPermissions())
+
             if (!isPermissionGranted(permission.permission()))
 
                 switch (permission.permissionDisabledPolicy()) {
@@ -46,44 +49,33 @@ class FlowStateEvaluator {
                         shouldFlow = false;
                         break;
 
-                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_PROCEED:
-                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_FAIL:
-                    case IF_MISSING_THEN_ASK_IF_DENIED_THEN_SHOW_RATIONALE:
-                    case IF_NEVER_SHOW_AGAIN_THEN_PROCEED:
-                    case IF_NEVER_SHOW_AGAIN_THEN_FAIL:
-                    case IF_MISSING_THEN_ASK:
-                    case IF_NEVER_SHOW_AGAIN_THEN_REDIRECT_TO_SETTINGS_AFTER_RATIONALE:
+                    case ASK_IF_MISSING:
                         askPermissions.add(permission);
                         break;
                 }
 
-        for (RequiresSetting setting : stream.getRequiredSettings())
-            if (!isSettingsGranted(setting.setting()))
+        if (askPermissions.size() == 0)
+            for (RequiresSetting setting : stream.getRequiredSettings())
+                if (!isSettingsStateMatching(setting))
 
-                switch (setting.settingsDisabledPolicy()) {
+                    switch (setting.settingsStateMismatchPolicy()) {
 
-                    case PROCEED: // don't need to do nothing
-                        break;
+                        case PROCEED: // don't need to do nothing
+                            break;
 
-                    case FAIL:
-                        shouldFlow = false;
-                        break;
+                        case FAIL:
+                            shouldFlow = false;
+                            break;
 
-                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE:
-                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE:
-                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_PROCEED:
-                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_FAIL:
-                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE_IF_DENIED_THEN_PROCEED:
-                    case IF_MISSING_THEN_ASK_WITHOUT_RATIONALE_IF_DENIED_THEN_FAIL:
-                    case IF_MISSING_THEN_ASK_AFTER_RATIONALE_IF_DENIED_THEN_REDIRECT_TO_SETTINGS:
-                        askSettings.add(setting);
-                        break;
-                }
+                        case SHOW_DIALOG_IF_STATE_MISMATCH:
+                            showSettingsDialog.add(setting);
+                            break;
+                    }
 
-        if (askPermissions.size() > 0 || askSettings.size() > 0) {
+        if (askPermissions.size() > 0 || showSettingsDialog.size() > 0) {
             dam = new Dam(StreamFlowState.CHOKED);
             dam.setAskPermissions(askPermissions);
-            dam.setAskSettings(askSettings);
+            dam.setShowSettingsRequirementDialog(showSettingsDialog);
         } else
             dam = new Dam(shouldFlow ? StreamFlowState.FLOW : StreamFlowState.STAGNATE);
 
@@ -101,27 +93,50 @@ class FlowStateEvaluator {
     }
 
     /**
-     * Checks whether a given setting is enabled.
+     * Checks whether a given setting's state (enabled or disabled) is matching what is specified in a
+     * RequiresSetting annotation.
      *
-     * @param setting the Settings type to check
-     * @return whether the setting is enabled
+     * @param requiresSetting the Settings type to check
+     * @return                whether the setting's state (enabled or disabled) is matching the
+     *                        settingsStateMismatchPolicy of the Setting.
      */
-    private boolean isSettingsGranted(Settings setting) {
+    private boolean isSettingsStateMatching(RequiresSetting requiresSetting) {
 
-        switch (setting) {
+        boolean isEnabled = false;
+
+        switch (requiresSetting.setting()) {
 
             case GPS:
-                return new GPSManager(BernoulliBank.getContext()).isGPSTurnedOn();
+                isEnabled = new GPSManager().isGPSTurnedOn();
+                break;
 
             case BLUETOOTH:
                 BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
+                isEnabled = bluetoothAdapter != null && bluetoothAdapter.isEnabled();
+                break;
 
             case AUTO_ROTATE:
-                return android.provider.Settings.System.getInt(BernoulliBank.getContext().getContentResolver(),
-                        android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
-            default:
-                return false;
+                isEnabled = Settings.System.getInt(BernoulliBank.getContext().getContentResolver(),
+                        Settings.System.ACCELEROMETER_ROTATION, 0) == 1;
+                break;
+
+            case INTERNET_ANY:
+                isEnabled = new NetworkManager().isInternetAvailable();
+                break;
+
+            case INTERNET_WIFI:
+                isEnabled = new NetworkManager().isWifiAvailable();
+                break;
+
+            case INTERNET_MOBILE_DATA:
+                isEnabled = new NetworkManager().isMobileInternetAvailable();
+                break;
+
+            case AIRPLANE_MODE:
+                isEnabled = Settings.Global.getInt(BernoulliBank.getContext().getContentResolver(),
+                        Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
         }
+
+        return requiresSetting.shouldBeEnabled() == isEnabled;
     }
 }

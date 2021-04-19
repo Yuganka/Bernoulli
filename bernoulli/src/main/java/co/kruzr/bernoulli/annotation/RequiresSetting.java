@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import co.kruzr.bernoulli.Settings;
-import co.kruzr.bernoulli.SettingsDisabledPolicy;
+import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
 
 /***
  * An annotation that encapsulates the setting requirements of a method, and the expected behaviour when that setting
@@ -24,12 +24,12 @@ public @interface RequiresSetting {
     Settings setting();
 
     /**
-     * Expected behaviour if the setting is disabled.
+     * Whether the setting should be enabled.
      */
-    SettingsDisabledPolicy settingsDisabledPolicy() default SettingsDisabledPolicy.PROCEED;
+    boolean shouldBeEnabled() default true;
 
     /**
-     * The rationale message that should be shown if specified as such in settingsDisabledPolicy.
+     * Expected behaviour if the setting state mismatches the requirement.
      */
-    String rationaleMessage() default "";
+    SettingsStateMismatchPolicy settingsStateMismatchPolicy() default SettingsStateMismatchPolicy.PROCEED;
 }

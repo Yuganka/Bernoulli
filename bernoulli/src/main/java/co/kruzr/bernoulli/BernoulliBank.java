@@ -9,7 +9,7 @@ import android.content.Context;
  * Holds information of client classes (river in the Bernoulli jargon) where some methods (streams in the
  * Bernoulli jargon) are using Bernoulli annotations, along with their @IFlowStateEvaluator interfaces.
  */
-class BernoulliBank {
+public class BernoulliBank {
 
     /**
      * Instance of the class.

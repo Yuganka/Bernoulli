@@ -1,18 +1,19 @@
 package co.kruzr.bernoulli.android
 
 import co.kruzr.bernoulli.Permission
+import co.kruzr.bernoulli.annotation.RequiresPermission
 
 internal interface PermissionsInterface {
 
-    fun onPermissionGranted(permission: Permission?)
+    fun onPermissionGranted(permission: RequiresPermission?)
 
-    fun onPermissionDenied(permission: Permission?)
+    fun onPermissionDenied(permission: RequiresPermission?)
 
-    fun onNeverShowAgainClicked(permission: Permission?)
+    fun onNeverShowAgainClicked(permission: RequiresPermission?)
 
-    fun onPermissionRationalePositiveClick(permission: Permission?)
+    fun onPermissionRationalePositiveClick(permission: RequiresPermission?)
 
-    fun onPermissionRationaleNegativeClick(permission: Permission?)
+    fun onPermissionRationaleNegativeClick(permission: RequiresPermission?)
 
     fun onRedirectToSystemSettingsPositiveClick()
 

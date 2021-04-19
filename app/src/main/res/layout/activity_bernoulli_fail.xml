@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    android:background="#99da0000"
+    android:background="#6600ff00"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:text="Camera fail, GPS true fail"
+        android:background="@color/colorPrimary"
+        android:text="Camera fail, GPS proceed"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
-        android:text="Location fail, GPS false fail"
+        android:background="@color/colorPrimary"
+        android:text="Location fail, GPS fail"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -31,18 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
-        android:text="Record Audio proceed, GPS true fail"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/button_4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
-        android:text="Contact proceed, GPS false fail"
+        android:background="@color/colorPrimary"
+        android:text="Record Audio fail, GPS show"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -54,5 +44,15 @@
         android:layout_weight="1"
         android:padding="12dp"
         tools:text="Sample text" />
+
+    <Button
+        android:id="@+id/open_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimary"
+        android:text="Open show activity"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
 
 </LinearLayout>

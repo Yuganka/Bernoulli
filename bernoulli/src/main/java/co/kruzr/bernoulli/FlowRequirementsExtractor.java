@@ -80,12 +80,10 @@ class FlowRequirementsExtractor {
      */
     public boolean hasEnteredActivity() {
 
-        boolean hasEntered = false;
-
         for (Annotation annotation : annotationList)
             if (annotation instanceof AttachScreen)
-                hasEntered = ((AttachScreen) annotation).isActive();
+                return ((AttachScreen) annotation).isActive();
 
-        return hasEntered;
+        return false;
     }
 }

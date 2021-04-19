@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    android:background="@color/white"
+    android:background="#66ff0000"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="Camera fail, GPS true fail"
+        android:background="@color/colorAccent"
+        android:text="Camera proceed, GPS proceed"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:text="Location fail, GPS false fail"
+        android:background="@color/colorAccent"
+        android:text="Location proceed, GPS fail"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -31,18 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:text="Record Audio proceed, GPS true fail"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/button_4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:text="Contact proceed, GPS false fail"
+        android:background="@color/colorAccent"
+        android:text="Record Audio proceed, GPS show"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -61,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@color/colorPrimary"
-        android:text="Open other activity"
+        android:text="Open fail activity"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 

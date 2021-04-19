@@ -29,7 +29,8 @@ public @interface RequiresPermission {
     PermissionDisabledPolicy permissionDisabledPolicy() default PermissionDisabledPolicy.PROCEED;
 
     /**
-     * The rationale message that should be shown if specified as such in permissionDisabledPolicy.
+     * The request code for the permission, only used if permissionDisabledPolicy is PermissionDisabledPolicy
+     * .ASK_IF_MISSING.
      */
-    String rationaleMessage() default "";
+    int permissionRequestCode() default 1;
 }

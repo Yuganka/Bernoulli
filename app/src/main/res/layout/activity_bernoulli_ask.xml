@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="12dp"
-    android:background="#6600ff00"
+    android:background="#880022ff"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="Camera proceed, GPS proceed"
+        android:background="@color/red"
+        android:text="Camera ask, GPS proceed"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:text="Location proceed, GPS fail"
+        android:background="@color/red"
+        android:text="Location ask, GPS fail"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -31,8 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
-        android:text="Record Audio proceed, GPS show"
+        android:background="@color/red"
+        android:text="Record Audio ask, GPS show"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
@@ -44,15 +44,5 @@
         android:layout_weight="1"
         android:padding="12dp"
         tools:text="Sample text" />
-
-    <Button
-        android:id="@+id/open_other"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@color/colorPrimary"
-        android:text="Open fail activity"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
 
 </LinearLayout>

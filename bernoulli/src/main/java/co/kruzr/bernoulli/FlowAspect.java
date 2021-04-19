@@ -16,6 +16,8 @@ import co.kruzr.bernoulli.android.BernoulliActivity;
 import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.desilting.AskPermissionSet;
+import co.kruzr.bernoulli.desilting.AskSettingSet;
 import co.kruzr.bernoulli.desilting.Dam;
 
 /**
@@ -71,6 +73,8 @@ public class FlowAspect {
 
         boolean methodShouldExecute = true;
 
+        boolean arePermsAndSettingsProcessed = false;
+
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
         Log.e("Bernoulli", "Entered FlowAspect for " + methodSignature.getMethod().getName());
@@ -84,8 +88,18 @@ public class FlowAspect {
             // don't want to return from here as we want the other annotations to also be processed
             if (annotation.annotationType() == AttachScreen.class) {
                 doAttachActivityWork(methodSignature);
-            } else if (annotation.annotationType() == RequiresPermission.class || annotation.annotationType() == RequiresSetting.class)
-                methodShouldExecute &= doRequiresSettingAndPermissionWork(methodSignature, joinPoint) != null;
+            }
+
+            // in the case of RequiresPermission and RequiresSetting, the evaluation is done together. Therefore,
+            // should break from the loop whenever either of these annotations is found
+            else if (annotation.annotationType() == RequiresPermission.class || annotation.annotationType() == RequiresSetting.class) {
+
+                if (!arePermsAndSettingsProcessed) {
+
+                    methodShouldExecute = doRequiresSettingAndPermissionWork(methodSignature, joinPoint) != null;
+                    arePermsAndSettingsProcessed = true;
+                }
+            }
         }
 
         if (methodShouldExecute)
@@ -112,13 +126,21 @@ public class FlowAspect {
 
                 switch (dam.getStreamFlowState()) {
 
-                    case FLOW:
-                        return joinPoint.proceed();
-                    case STAGNATE:
+                    case STAGNATE: // don't proceed with execution
                         return null;
-                    case CHOKED: // todo handle this case
+
+                    case CHOKED:
+                        Log.e("Bernoulli",
+                                "Perm - "  + dam.getAskPermissions().size() + "; Setting - " + dam.getShowSettingsRequirementDialog().size());
+                        if (dam.getAskPermissions().size() > 0)
+                            new AskPermissionSet(dam.getAskPermissions()).begin();
+                        else
+                            new AskSettingSet(dam.getShowSettingsRequirementDialog()).begin();
+                        return null;
+
+                    case FLOW: // proceed with execution
                     default:
-                        return null;
+                        return joinPoint.proceed();
                 }
 
             } else {

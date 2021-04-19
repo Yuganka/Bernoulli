@@ -31,10 +31,10 @@ public class Dam {
     private List<RequiresPermission> askPermissions = new ArrayList<>();
 
     /**
-     * The list of settings that need to be asked, values will only be relevant when streamFlowState is
-     * StreamFlowState.CHOKED, irrelevant otherwise.
+     * The list of settings whose requirements needs to be told to the user, values will only be relevant when
+     * streamFlowState is StreamFlowState.CHOKED, irrelevant otherwise.
      */
-    private List<RequiresSetting> askSettings = new ArrayList<>();
+    private List<RequiresSetting> showSettingsRequirementDialog = new ArrayList<>();
 
     /**
      * If streamFlowState is either StreamFlowState.FLOW or StreamFlowState.STAGNATE, then it means the method's
@@ -57,7 +57,7 @@ public class Dam {
             case FLOW:
             case STAGNATE:
                 askPermissions = Collections.unmodifiableList(askPermissions);
-                askSettings = Collections.unmodifiableList(askSettings);
+                showSettingsRequirementDialog = Collections.unmodifiableList(showSettingsRequirementDialog);
                 break;
         }
     }
@@ -71,12 +71,12 @@ public class Dam {
             this.askPermissions = askPermissions;
     }
 
-    public List<RequiresSetting> getAskSettings() {
-        return askSettings;
+    public List<RequiresSetting> getShowSettingsRequirementDialog() {
+        return showSettingsRequirementDialog;
     }
 
-    public void setAskSettings(List<RequiresSetting> askSettings) {
+    public void setShowSettingsRequirementDialog(List<RequiresSetting> showSettingsRequirementDialog) {
         if (streamFlowState == StreamFlowState.CHOKED)
-            this.askSettings = askSettings;
+            this.showSettingsRequirementDialog = showSettingsRequirementDialog;
     }
 }

@@ -29,7 +29,7 @@ class PrintUtils {
         combined.append("\nSettings\n");
 
         for (RequiresSetting setting : stream.getRequiredSettings())
-            combined.append(setting.setting() + ", disabledPolicy " + setting.settingsDisabledPolicy()).append("\n");
+            combined.append(setting.setting() + ", settingsStateMismatchPolicy " + setting.settingsStateMismatchPolicy()).append("\n");
 
         return combined.toString();
 
@@ -53,7 +53,7 @@ class PrintUtils {
 
         combined.append("\nSettings\n");
 
-        for (RequiresSetting setting : dam.getAskSettings())
+        for (RequiresSetting setting : dam.getShowSettingsRequirementDialog())
             combined.append(setting).append("\n");
 
         return combined.toString();
@@ -77,5 +77,24 @@ class PrintUtils {
 
         Log.e("Bernoulli", "Current Activity - " + CurrentScreen.getCurrentActivity());
         Log.e("Bernoulli", "Current Activity Hashcode - " + CurrentScreen.getCurrentActivityHashcode());
+    }
+
+    private String getCombinedString(List<Permission> listMissingPerms,
+                                     List<Settings> listMissingSettings) {
+
+        StringBuilder combined = new StringBuilder();
+
+        combined.append("Permissions - ").append("\n");
+
+        for (Permission perm : listMissingPerms)
+            combined.append(perm).append("\n");
+
+        combined.append("\nSettings\n");
+
+        for (Settings setting : listMissingSettings)
+            combined.append(setting).append("\n");
+
+        return combined.toString();
+
     }
 }

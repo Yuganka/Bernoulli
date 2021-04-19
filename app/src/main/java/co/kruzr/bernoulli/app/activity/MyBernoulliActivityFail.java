@@ -1,5 +1,6 @@
 package co.kruzr.bernoulli.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,27 +19,25 @@ import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.app.R;
 
-public class MyBernoulliActivityOther extends BernoulliActivity implements View.OnClickListener {
+public class MyBernoulliActivityFail extends BernoulliActivity implements View.OnClickListener {
 
     private final int REQUEST_CODE_FINE_LOCATION = 123;
     private final int REQUEST_CODE_CAMERA = 456;
     private final int REQUEST_CODE_RECORD_AUDIO = 789;
-    private final int REQUEST_CODE_CONTACTS = 101112;
 
     private TextView textviewLogs;
-    private Button button1, button2, button3, button4;
+    private Button button1, button2, button3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bernoulli_other);
+        setContentView(R.layout.activity_bernoulli_fail);
 
         textviewLogs = findViewById(R.id.textview_logs);
 
         button1 = findViewById(R.id.button_1);
         button2 = findViewById(R.id.button_2);
         button3 = findViewById(R.id.button_3);
-        button4 = findViewById(R.id.button_4);
     }
 
     @Override
@@ -48,7 +47,13 @@ public class MyBernoulliActivityOther extends BernoulliActivity implements View.
         button1.setOnClickListener(this);
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
-        button4.setOnClickListener(this);
+
+        findViewById(R.id.open_other).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyBernoulliActivityFail.this, MyBernoulliActivityAsk.class));
+            }
+        });
     }
 
     @Override
@@ -74,27 +79,22 @@ public class MyBernoulliActivityOther extends BernoulliActivity implements View.
             case R.id.button_3:
                 button3();
                 break;
-
-            case R.id.button_4:
-                button4();
-                break;
         }
     }
 
     @RequiresPermission(permission = Permission.CAMERA, permissionDisabledPolicy =
-            PermissionDisabledPolicy.ASK_IF_MISSING, permissionRequestCode = REQUEST_CODE_CAMERA)
+            PermissionDisabledPolicy.FAIL, permissionRequestCode = REQUEST_CODE_CAMERA)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.FAIL)
+            SettingsStateMismatchPolicy.PROCEED)
     private void button1() {
 
         textviewLogs.setText("Run button 1");
-        Log.e("Bernoulli", "Camera fail, GPS true fail");
     }
 
     @RequiresPermission(permission = Permission.FINE_LOCATION, permissionDisabledPolicy =
-            PermissionDisabledPolicy.ASK_IF_MISSING, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
-    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = false, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.PROCEED)
+            PermissionDisabledPolicy.FAIL, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
+    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
+            SettingsStateMismatchPolicy.FAIL)
     private void button2() {
 
         textviewLogs.setText("Run button 2");
@@ -107,14 +107,6 @@ public class MyBernoulliActivityOther extends BernoulliActivity implements View.
     private void button3() {
 
         textviewLogs.setText("Run button 3");
-    }
-
-    @RequiresPermission(permission = Permission.READ_CONTACTS, permissionDisabledPolicy =
-            PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_CONTACTS)
-    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = false, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.FAIL)
-    private void button4() {
-        textviewLogs.setText("Run button 4");
     }
 
     private void clearTextViewLogs() {
@@ -138,10 +130,6 @@ public class MyBernoulliActivityOther extends BernoulliActivity implements View.
 
             case REQUEST_CODE_RECORD_AUDIO:
                 button3();
-                break;
-
-            case REQUEST_CODE_CONTACTS:
-                button4();
                 break;
         }
     }

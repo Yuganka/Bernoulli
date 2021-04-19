@@ -19,7 +19,7 @@ import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.app.R;
 
-public class MyBernoulliActivity extends BernoulliActivity implements View.OnClickListener {
+public class MyBernoulliActivityProceed extends BernoulliActivity implements View.OnClickListener {
 
     private final int REQUEST_CODE_FINE_LOCATION = 123;
     private final int REQUEST_CODE_CAMERA = 456;
@@ -31,7 +31,7 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bernoulli);
+        setContentView(R.layout.activity_bernoulli_proceed);
 
         textviewLogs = findViewById(R.id.textview_logs);
 
@@ -51,7 +51,7 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
         findViewById(R.id.open_other).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MyBernoulliActivity.this, MyBernoulliActivityFail.class));
+                startActivity(new Intent(MyBernoulliActivityProceed.this, MyBernoulliActivityFail.class));
             }
         });
     }
@@ -89,12 +89,11 @@ public class MyBernoulliActivity extends BernoulliActivity implements View.OnCli
     private void button1() {
 
         textviewLogs.setText("Run Setting proceed");
-        Log.e("Bernoulli", "Camera fail, GPS true fail");
     }
 
     @RequiresPermission(permission = Permission.FINE_LOCATION, permissionDisabledPolicy =
             PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
-    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = false, settingsStateMismatchPolicy =
+    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.FAIL)
     private void button2() {
 

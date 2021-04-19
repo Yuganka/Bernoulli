@@ -6,6 +6,10 @@
 
     <color name="white">#ffffffff</color>
 
+    <color name="red">#88ff5500</color>
+
+    <color name="gray">#88d0d0d0</color>
+
     <color name="textColorDark">#ff05294B</color>
     <color name="textColorHintDark">#FF969696</color>
 

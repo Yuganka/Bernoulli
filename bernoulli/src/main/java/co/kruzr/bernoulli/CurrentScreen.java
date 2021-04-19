@@ -1,8 +1,7 @@
 package co.kruzr.bernoulli;
 
-import androidx.annotation.RequiresPermission;
-
 import co.kruzr.bernoulli.android.BernoulliActivity;
+import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import lombok.Getter;
 import lombok.Setter;
