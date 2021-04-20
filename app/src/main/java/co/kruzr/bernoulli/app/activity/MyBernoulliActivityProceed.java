@@ -91,7 +91,7 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
         textviewLogs.setText("Run Setting proceed");
     }
 
-    @RequiresPermission(permission = Permission.FINE_LOCATION, permissionDisabledPolicy =
+    @RequiresPermission(permission = Permission.ACCESS_FINE_LOCATION, permissionDisabledPolicy =
             PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.FAIL)

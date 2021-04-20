@@ -19,11 +19,11 @@ public class AskSettingSet {
 
         Log.e("Bernoulli", "AskSettingSet begin");
 
-        if (CurrentScreen.getCurrentActivity() != null) {
+        if (CurrentScreen.INSTANCE.getCurrentActivity() != null) {
 
             Log.e("Bernoulli", "AskSettingSet Current activity not null");
 
-            new AlertDialog.Builder(CurrentScreen.getCurrentActivity())
+            new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
                     .setTitle(requiresSettings.get(0).setting().getDescription())
                     .setMessage(createMessage(requiresSettings.get(0)))
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

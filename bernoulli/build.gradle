@@ -20,6 +20,7 @@ buildscript {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 repositories {
     google()
@@ -34,8 +35,9 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     /* Lombok */
-    compileOnly 'org.projectlombok:lombok:1.18.10'
-    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    kapt "org.projectlombok:lombok:1.18.16"
 
     implementation 'org.aspectj:aspectjrt:1.9.4'
     implementation "androidx.core:core-ktx:+"

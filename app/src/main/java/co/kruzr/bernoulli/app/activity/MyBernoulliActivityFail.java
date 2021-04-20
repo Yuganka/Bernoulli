@@ -91,7 +91,7 @@ public class MyBernoulliActivityFail extends BernoulliActivity implements View.O
         textviewLogs.setText("Run button 1");
     }
 
-    @RequiresPermission(permission = Permission.FINE_LOCATION, permissionDisabledPolicy =
+    @RequiresPermission(permission = Permission.ACCESS_FINE_LOCATION, permissionDisabledPolicy =
             PermissionDisabledPolicy.FAIL, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.FAIL)
