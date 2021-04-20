@@ -1,8 +1,8 @@
 package co.kruzr.bernoulli.annotation
 
 /***
- * An annotation that encapsulates the setting requirements of a method, and the expected behaviour when that setting
- * is disabled.
+ * An annotation that ensures the current screen's state is saved in CurrentScreen class by making the class active
+ * in it's onResume and inactive in its onPause lifecycle methods.
  *
  * A method can apply this annotation only once.
  */
@@ -10,6 +10,6 @@ package co.kruzr.bernoulli.annotation
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 internal annotation class AttachScreen(
         /**
-         * The type of setting.
+         * If the screen is active.
          */
         val isActive: Boolean = false)
