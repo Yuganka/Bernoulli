@@ -69,7 +69,7 @@ public enum Permission {
     READ_CALENDAR("Read Calendar", Manifest.permission.READ_CALENDAR),
 
 
-    READ_CONTACTS("Contacts", Manifest.permission.READ_CONTACTS),
+    READ_CONTACTS("Read Contacts", Manifest.permission.READ_CONTACTS),
 
 
     READ_EXTERNAL_STORAGE("Read External Storage", Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -109,7 +109,7 @@ public enum Permission {
     WRITE_CONTACTS("Write Contacts", Manifest.permission.WRITE_CONTACTS),
 
 
-    WRITE_EXTERNALS_STORAGE("Write External Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    WRITE_EXTERNAL_STORAGE("Write External Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
 
     @Getter

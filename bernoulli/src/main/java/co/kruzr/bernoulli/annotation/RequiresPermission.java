@@ -9,8 +9,8 @@ import co.kruzr.bernoulli.PermissionDisabledPolicy;
 import co.kruzr.bernoulli.Permission;
 
 /***
- * An annotation that encapsulates the permission requirements of a method, and the expected behaviour in the absence
- * of the permission.
+ * An annotation that specifies a given permission requirement of a method, and the expected behaviour in the
+ * absence of the permission.
  *
  * A method can apply this annotation only once.
  */
@@ -24,13 +24,14 @@ public @interface RequiresPermission {
     Permission permission();
 
     /**
-     * Expected behaviour if the permission has not been granted.
+     * Expected behaviour if the permission has not been granted. If not specified, usual method execution shall
+     * proceed if permission has not been granted.
      */
     PermissionDisabledPolicy permissionDisabledPolicy() default PermissionDisabledPolicy.PROCEED;
 
     /**
-     * The request code for the permission, only used if permissionDisabledPolicy is PermissionDisabledPolicy
-     * .ASK_IF_MISSING.
+     * The request code to be used when asking for the permission from the OS, only used if permissionDisabledPolicy is
+     * PermissionDisabledPolicy.ASK_IF_MISSING AND the specified method is in a sub-class of BernoulliActivity.
      */
     int permissionRequestCode() default 1;
 }

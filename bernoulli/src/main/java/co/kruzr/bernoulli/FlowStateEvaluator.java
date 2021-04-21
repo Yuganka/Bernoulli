@@ -16,10 +16,14 @@ import co.kruzr.bernoulli.managers.SettingsManager;
 class FlowStateEvaluator {
 
     /**
-     * Evaluates whether, for a given Stream, the permissions and settings it requires have been granted / enabled.
+     * Evaluates whether, for a given Stream, the permissions and settings it requires have been granted / enabled
+     * and based on that, finds out its flow state.
+     *
+     * Only need to check for setting states if we don't need to ask for any permissions from the user, for if we
+     * do then the SettingsStateMismatchPolicy becomes SettingsStateMismatchPolicy.FAIL
      *
      * @param stream the method for which the permissions and settings need to be checked
-     * @return an EvaluatedStream object that encapsulates the missing permissions and settings for the stream
+     * @return a Dam that encapsulates the state of flow of the stream
      */
     public Dam evaluate(Stream stream) {
 
@@ -39,7 +43,7 @@ class FlowStateEvaluator {
 
                 switch (permission.permissionDisabledPolicy()) {
 
-                    case PROCEED: // don't need to do nothing
+                    case PROCEED: // don't need to do anything
                         break;
 
                     case FAIL:
@@ -51,13 +55,14 @@ class FlowStateEvaluator {
                         break;
                 }
 
+
         if (askPermissions.size() == 0)
             for (RequiresSetting setting : stream.getRequiredSettings())
                 if (!settingsManager.isSettingsStateMatching(setting))
 
                     switch (setting.settingsStateMismatchPolicy()) {
 
-                        case PROCEED: // don't need to do nothing
+                        case PROCEED: // don't need to do anything
                             break;
 
                         case FAIL:

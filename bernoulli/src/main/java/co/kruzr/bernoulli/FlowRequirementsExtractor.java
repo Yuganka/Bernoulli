@@ -34,14 +34,14 @@ class FlowRequirementsExtractor {
     private List<RequiresPermission> listRequiresPermissions = new ArrayList<>();
 
     /**
-     * The list of settings required by the method.
+     * The list of settings and their states which are required by the method.
      */
     @Getter
     private List<RequiresSetting> listRequiresSettings = new ArrayList<>();
 
     /**
-     * Determines whether the requirements of the method should be extracted, and if yes then initialises the stream
-     * object.
+     * Fills in the annotationList with the annotations that have been applied to the passed method. In addition,
+     * it initialises the stream object.
      *
      * @param method the method for which the requirements have to be extracted
      */
@@ -54,7 +54,7 @@ class FlowRequirementsExtractor {
     /**
      * Updates the stream object with the details of the permissions and settings it needs.
      *
-     * @return the updated stream object if the requirements should be evaluated, null otherwise
+     * @return the updated stream object
      */
     public Stream getPermissionAndSettingRequirementsOfStream() {
 

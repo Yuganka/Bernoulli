@@ -19,6 +19,10 @@ import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.app.R;
 
+/**
+ * An activity to test all combinations of a fixed PermissionDisabledPolicy value of
+ * PermissionDisabledPolicy.PROCEED and all possible values of SettingsStateMismatchPolicy.
+ */
 public class MyBernoulliActivityProceed extends BernoulliActivity implements View.OnClickListener {
 
     private final int REQUEST_CODE_FINE_LOCATION = 123;

@@ -5,13 +5,20 @@ package co.kruzr.bernoulli;
  */
 public enum PermissionDisabledPolicy {
 
+    /**
+     * Proceed with the execution of the method.
+     */
     PROCEED,
+
+    /**
+     * Stop the execution of the method.
+     */
     FAIL,
 
     /**
-     * To ask for the relevant permission in the current activity. The callback will come in
+     * Ask for the relevant permission in the current activity. The callback will come in
      * onRequestPermissionsResult of the same activity, and from there the client can choose the future course of
-     * action (which may be to call the method again if the permission has been granted).
+     * action (which may be to call the method again if the permission has been granted, or something else).
      *
      * Important note - this value will be given the highest priority among all permission and setting requirements
      * of a method. Specifically, if any RequiresPermission annotation on a method has set this as

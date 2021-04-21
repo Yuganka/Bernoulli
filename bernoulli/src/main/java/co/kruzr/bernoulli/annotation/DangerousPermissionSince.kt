@@ -3,8 +3,8 @@ package co.kruzr.bernoulli.annotation
 import co.kruzr.bernoulli.Constants
 
 /***
- * An annotation that specifies the API Level in which a given dangerous permission has been added i.e. needs to be
- * asked from the user at runtime.
+ * An internal annotation that specifies the API Level in which a given dangerous permission has been added i.e. needs
+ * to be asked from the user at runtime.
  *
  * This should only be used on the values in the Permission enum class.
  *

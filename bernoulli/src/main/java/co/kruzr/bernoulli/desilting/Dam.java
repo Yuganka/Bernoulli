@@ -13,7 +13,7 @@ import lombok.Getter;
  * Model class for a dam which may have been constructed on a given stream, which is basically a metaphor for
  * obstructions in the execution of a method.
  * <p>
- * Encapsulates all the permission and setting of the method (basically impediments in the flow of the stream) which
+ * Encapsulates all the permissions and settings of the method (basically impediments in the flow of the stream) which
  * need to be removed, and so will be asked from the user.
  */
 public class Dam {
@@ -62,19 +62,43 @@ public class Dam {
         }
     }
 
+    /**
+     * Returns the list of permissions that need to be asked from the user.
+     *
+     * @return
+     */
     public List<RequiresPermission> getAskPermissions() {
         return askPermissions;
     }
 
+    /**
+     * Sets the list of permissions that need to be asked from the user. The values are only updated if
+     * streamFlowState is StreamFlowState.CHOKED since in other states, the fate of the stream, i.e. method's execution,
+     * is clear.
+     *
+     * @param askPermissions
+     */
     public void setAskPermissions(List<RequiresPermission> askPermissions) {
         if (streamFlowState == StreamFlowState.CHOKED)
             this.askPermissions = askPermissions;
     }
 
+    /**
+     * Returns the list of settings whose state requirement needs to be shown to the user.
+     *
+     * @return
+     */
     public List<RequiresSetting> getShowSettingsRequirementDialog() {
         return showSettingsRequirementDialog;
     }
 
+    /**
+     * Sets the list of settings whose states need to be shown to the user. The values are only updated if
+     * streamFlowState is StreamFlowState.CHOKED since in other states, the fate of the stream, i.e. method's execution,
+     * is clear.
+     *
+     * @param showSettingsRequirementDialog
+     */
     public void setShowSettingsRequirementDialog(List<RequiresSetting> showSettingsRequirementDialog) {
         if (streamFlowState == StreamFlowState.CHOKED)
             this.showSettingsRequirementDialog = showSettingsRequirementDialog;

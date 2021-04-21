@@ -1,24 +1,19 @@
 package co.kruzr.bernoulli.android;
 
-import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import co.kruzr.bernoulli.CurrentScreen;
 import co.kruzr.bernoulli.annotation.AttachScreen;
 
+/**
+ * If the client wants to use PermissionDisabledPolicy.ASK_IF_MISSING with any RequiresPermission annotation, they will
+ * only be able to use it from a sub-class of this activity.
+ */
 public class BernoulliActivity extends AppCompatActivity {
-
-    @CallSuper
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @AttachScreen(isActive = true)
     @Override

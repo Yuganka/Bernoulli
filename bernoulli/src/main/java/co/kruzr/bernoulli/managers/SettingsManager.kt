@@ -6,9 +6,10 @@ import co.kruzr.bernoulli.Settings
 import co.kruzr.bernoulli.annotation.RequiresSetting
 
 /**
- * A class to overlook all permissions related work.
+ * A class to overlook settings state check related work.
  */
 internal class SettingsManager constructor(private val context : Context){
+
     /**
      * Checks whether a given setting's state (enabled or disabled) is matching what is specified in a
      * RequiresSetting annotation.

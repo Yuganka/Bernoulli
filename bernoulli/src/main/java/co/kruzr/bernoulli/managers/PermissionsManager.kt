@@ -10,7 +10,7 @@ import co.kruzr.bernoulli.Permission
 import co.kruzr.bernoulli.annotation.DangerousPermissionSince
 
 /**
- * A class to overlook all permissions related work.
+ * A class to overlook permission state check related work.
  */
 internal class PermissionsManager constructor(private val context: Context) {
 

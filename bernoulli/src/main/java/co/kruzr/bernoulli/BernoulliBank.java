@@ -3,11 +3,11 @@ package co.kruzr.bernoulli;
 import android.content.Context;
 
 /**
- * This class is akin to a bank which stores objects of value, and can also be taken to refer to the bank of a
+ * This class is akin to a bank which stores objects of importance, and can also be taken to refer to the bank of a
  * river.
  * <p>
- * Holds information of client classes (river in the Bernoulli jargon) where some methods (streams in the
- * Bernoulli jargon) are using Bernoulli annotations, along with their @IFlowStateEvaluator interfaces.
+ * Holds any and all relevant information of the client and its state (river in the Bernoulli jargon), which may be
+ * required by Mr. Bernoulli from time to time.
  */
 class BernoulliBank {
 
@@ -17,7 +17,8 @@ class BernoulliBank {
     private static volatile BernoulliBank bernoulliBankInstance;
 
     /**
-     * A context is needed by the library for determining the states of Android permissions and settings.
+     * The client's context is needed by Mr. Bernoulli so that he can properly determine the states of
+     * Android permissions and setting states of the client.
      */
     private static Context applicationContext;
 
@@ -32,6 +33,10 @@ class BernoulliBank {
         return bernoulliBankInstance;
     }
 
+    /**
+     * Private constructor
+     * @param passedApplicationContext
+     */
     private BernoulliBank(Context passedApplicationContext) {
         applicationContext = passedApplicationContext;
     }
