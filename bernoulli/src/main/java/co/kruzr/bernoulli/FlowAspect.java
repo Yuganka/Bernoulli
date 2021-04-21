@@ -9,11 +9,13 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
 import co.kruzr.bernoulli.android.BernoulliActivity;
 import co.kruzr.bernoulli.annotation.AttachScreen;
+import co.kruzr.bernoulli.annotation.PermissionRequestCode;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.desilting.AskPermissionSet;
@@ -30,16 +32,27 @@ public class FlowAspect {
 
     /**
      * Defines a pointcut for the annotation RequiresPermission.
-     *
+     * <p>
      * This string is basically an instruction to capture all instances where a method annotated with
      * RequiresPermission is executed.
      */
     private static final String POINTCUT_METHOD_PERMISSION =
             "execution(@co.kruzr.bernoulli.annotation.RequiresPermission * *(..))";
 
+
+    /**
+     * Defines a pointcut for the annotation PermissionRequestCode.
+     * <p>
+     * This string is basically an instruction to capture all instances where a method annotated with
+     * PermissionRequestCode is executed.
+     */
+    private static final String POINTCUT_METHOD_PERMISSION_REQUEST_CODE =
+            "execution(@co.kruzr.bernoulli.annotation.PermissionRequestCode * *(..))";
+
+
     /**
      * Defines a pointcut for the annotation RequiresSetting.
-     *
+     * <p>
      * This string is basically an instruction to capture all instances where a method annotated with
      * RequiresSetting is executed.
      */
@@ -62,7 +75,7 @@ public class FlowAspect {
 
     /**
      * Defines a pointcut for the annotation AttachScreen.
-     *
+     * <p>
      * This string is basically an instruction to capture all instances where a method annotated with
      * AttachScreen is executed.
      */
@@ -72,30 +85,43 @@ public class FlowAspect {
 
     /**
      * The instances of methods with a RequiresPermission annotation are, in a sense, directed to this method.
-     *
+     * <p>
      * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
      */
     @Pointcut(POINTCUT_METHOD_PERMISSION)
     private void methodAnnotatedWithRequiresPermission() {
     }
 
+
+    /**
+     * The instances of methods with a PermissionRequestCode annotation are, in a sense, directed to this method.
+     * <p>
+     * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
+     */
+    @Pointcut(POINTCUT_METHOD_PERMISSION_REQUEST_CODE)
+    private void methodAnnotatedWithPermissionRequestCode() {
+    }
+
+
     /**
      * The instances of methods with a RequiresSetting annotation are, in a sense, directed to this method.
-     *
+     * <p>
      * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
      */
     @Pointcut(POINTCUT_METHOD_SETTING)
     private void methodAnnotatedWithRequiresSetting() {
     }
 
+
     /**
      * The instances of methods with a AttachScreen annotation are, in a sense, directed to this method.
-     *
+     * <p>
      * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
      */
     @Pointcut(POINTCUT_METHOD_ATTACH_SCREEN)
     private void methodAnnotatedWithAttachScreen() {
     }
+
 
     @Pointcut(POINTCUT_METHOD_MULTIPLE_PERMISSION)
     public void methodWithMultiplePermissions() {
@@ -108,16 +134,17 @@ public class FlowAspect {
     /**
      * Whenever a method is executed which is annotated with any of the annotations whose pointcuts have been defined
      * above, code execution will be done "Around" this method, since we are using the @Around annotation.
-     *
+     * <p>
      * This means, the control will first come to this method, then we can decide whether the method's actual code
      * should be executed or not.
      *
-     * @return  joinPoint.proceed() if we want the annotated method's code to be executed, null if we don't want it
+     * @return joinPoint.proceed() if we want the annotated method's code to be executed, null if we don't want it
      * to be executed.
      */
     @Around("methodAnnotatedWithRequiresPermission() " +
             " || methodAnnotatedWithRequiresSetting() " +
-            " || methodAnnotatedWithAttachScreen() ")
+            " || methodAnnotatedWithAttachScreen() " +
+            " || methodAnnotatedWithPermissionRequestCode() ")
     public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
 
         boolean methodShouldExecute = true;
@@ -162,9 +189,8 @@ public class FlowAspect {
      * This method will extract the permissions and settings required by that method and evaluate the missing
      * permissions and settings and then give a callback through the appropriate interface.
      *
-     * @param methodSignature    the method whose permission and setting requirements need to be extracted.
-     * @param joinPoint          an object that represents the control of flow in the method which has been annotated
-     *
+     * @param methodSignature the method whose permission and setting requirements need to be extracted.
+     * @param joinPoint       an object that represents the control of flow in the method which has been annotated
      * @return joinPoint.proceed() if we want the annotated method's code to be executed, null otherwise.
      * @throws Throwable
      */
@@ -178,7 +204,7 @@ public class FlowAspect {
 
             if (stream != null) {
 
-                Dam dam = new FlowStateEvaluator().evaluate(stream);
+                Dam dam = new FlowStateEvaluator().evaluate(stream, getPermissionRequestCode(methodSignature.getMethod()));
 
                 Log.e("Bernoulli", "FlowAspect Stream " + dam.getStreamFlowState());
 
@@ -189,9 +215,9 @@ public class FlowAspect {
 
                     case CHOKED:
                         Log.e("Bernoulli",
-                                "Perm - "  + dam.getAskPermissions().size() + "; Setting - " + dam.getShowSettingsRequirementDialog().size());
+                                "Perm - " + dam.getAskPermissions().size() + "; Setting - " + dam.getShowSettingsRequirementDialog().size());
                         if (dam.getAskPermissions().size() > 0)
-                            new AskPermissionSet(dam.getAskPermissions()).begin();
+                            new AskPermissionSet(dam).begin();
                         else
                             new AskSettingSet(dam.getShowSettingsRequirementDialog()).begin();
                         return null;
@@ -219,8 +245,7 @@ public class FlowAspect {
      * ensure that if we do need to ask for permissions, the onRequestPermissionsResult callback comes to the
      * appropriate activity.
      *
-     * @param methodSignature    the method on which AttachScreen annotation has been used.
-     *
+     * @param methodSignature the method on which AttachScreen annotation has been used.
      **/
     private void doAttachActivityWork(MethodSignature methodSignature) {
 
@@ -240,5 +265,16 @@ public class FlowAspect {
         } else
             Log.e("Bernoulli", "Unexpected state - AttachActivity annotation can only be applied to a " +
                     "sub-class of BernoulliActivity");
+    }
+
+    // helper methods
+
+    private Integer getPermissionRequestCode(Method method) {
+
+        for (Annotation annotation : method.getAnnotations())
+            if (annotation.annotationType() == PermissionRequestCode.class)
+                return ((PermissionRequestCode) annotation).value();
+
+        return null;
     }
 }

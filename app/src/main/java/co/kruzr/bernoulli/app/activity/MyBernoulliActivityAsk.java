@@ -15,6 +15,7 @@ import co.kruzr.bernoulli.PermissionDisabledPolicy;
 import co.kruzr.bernoulli.Settings;
 import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
 import co.kruzr.bernoulli.android.BernoulliActivity;
+import co.kruzr.bernoulli.annotation.PermissionRequestCode;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.app.R;
@@ -25,9 +26,9 @@ import co.kruzr.bernoulli.app.R;
  */
 public class MyBernoulliActivityAsk extends BernoulliActivity implements View.OnClickListener {
 
-    private final int REQUEST_CODE_FINE_LOCATION = 123;
-    private final int REQUEST_CODE_CAMERA = 456;
-    private final int REQUEST_CODE_RECORD_AUDIO = 789;
+    private final int REQUEST_CODE_BUTTON_1 = 123;
+    private final int REQUEST_CODE_BUTTON_2 = 456;
+    private final int REQUEST_CODE_BUTTON_3 = 789;
 
     private TextView textviewLogs;
     private Button button1, button2, button3;
@@ -79,8 +80,9 @@ public class MyBernoulliActivityAsk extends BernoulliActivity implements View.On
         }
     }
 
+    @PermissionRequestCode(value = REQUEST_CODE_BUTTON_1)
     @RequiresPermission(permission = Permission.CAMERA, permissionDisabledPolicy =
-            PermissionDisabledPolicy.ASK_IF_MISSING, permissionRequestCode = REQUEST_CODE_CAMERA)
+            PermissionDisabledPolicy.ASK_IF_MISSING)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.PROCEED)
     private void button1() {
@@ -88,8 +90,9 @@ public class MyBernoulliActivityAsk extends BernoulliActivity implements View.On
         textviewLogs.setText("Run button 1");
     }
 
+    @PermissionRequestCode(value = REQUEST_CODE_BUTTON_2)
     @RequiresPermission(permission = Permission.ACCESS_FINE_LOCATION, permissionDisabledPolicy =
-            PermissionDisabledPolicy.ASK_IF_MISSING, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
+            PermissionDisabledPolicy.ASK_IF_MISSING)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.FAIL)
     private void button2() {
@@ -97,10 +100,12 @@ public class MyBernoulliActivityAsk extends BernoulliActivity implements View.On
         textviewLogs.setText("Run button 2");
     }
 
+
+    @PermissionRequestCode(value = REQUEST_CODE_BUTTON_3)
     @RequiresPermission(permission = Permission.RECORD_AUDIO, permissionDisabledPolicy =
-            PermissionDisabledPolicy.ASK_IF_MISSING, permissionRequestCode = REQUEST_CODE_RECORD_AUDIO)
+            PermissionDisabledPolicy.ASK_IF_MISSING)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.SHOW_DIALOG_IF_STATE_MISMATCH)
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
     private void button3() {
 
         textviewLogs.setText("Run button 3");
@@ -117,15 +122,15 @@ public class MyBernoulliActivityAsk extends BernoulliActivity implements View.On
 
         switch (requestCode) {
 
-            case REQUEST_CODE_CAMERA:
+            case REQUEST_CODE_BUTTON_2:
                 button1();
                 break;
 
-            case REQUEST_CODE_FINE_LOCATION:
+            case REQUEST_CODE_BUTTON_1:
                 button2();
                 break;
 
-            case REQUEST_CODE_RECORD_AUDIO:
+            case REQUEST_CODE_BUTTON_3:
 
                 // using postDelayed as onRequestPermissionsResult is called BEFORE onResume, and we need this
                 // activity in resumed state for the annotations on button3() to work.

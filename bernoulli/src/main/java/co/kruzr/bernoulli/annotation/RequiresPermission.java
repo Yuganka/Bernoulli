@@ -28,10 +28,4 @@ public @interface RequiresPermission {
      * proceed if permission has not been granted.
      */
     PermissionDisabledPolicy permissionDisabledPolicy() default PermissionDisabledPolicy.PROCEED;
-
-    /**
-     * The request code to be used when asking for the permission from the OS, only used if permissionDisabledPolicy is
-     * PermissionDisabledPolicy.ASK_IF_MISSING AND the specified method is in a sub-class of BernoulliActivity.
-     */
-    int permissionRequestCode() default 1;
 }
