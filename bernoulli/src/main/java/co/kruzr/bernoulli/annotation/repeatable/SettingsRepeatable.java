@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 
 /**
- * Since a given class/method may require multiple settings, we need to set a meta-annotation @Repeatable to
+ * Since a given method may have multiple setting requirements, we need to set a meta-annotation @Repeatable to
  * RequiresSetting. That requires an intermediary class to be implemented.
  *
  * This is that class.

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 
 /**
- * Since a given class/method may require multiple permissions, we need to set a meta-annotation @Repeatable to
+ * Since a given method may require multiple permissions, we need to set a meta-annotation @Repeatable to
  * RequiresPermission. That requires an intermediary class to be implemented.
  *
  * This is that class.

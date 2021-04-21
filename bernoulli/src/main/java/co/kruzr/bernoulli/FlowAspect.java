@@ -18,6 +18,8 @@ import co.kruzr.bernoulli.annotation.AttachScreen;
 import co.kruzr.bernoulli.annotation.PermissionRequestCode;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable;
+import co.kruzr.bernoulli.annotation.repeatable.SettingsRepeatable;
 import co.kruzr.bernoulli.desilting.AskPermissionSet;
 import co.kruzr.bernoulli.desilting.AskSettingSet;
 import co.kruzr.bernoulli.desilting.Dam;
@@ -60,18 +62,18 @@ public class FlowAspect {
             "execution(@co.kruzr.bernoulli.annotation.RequiresSetting * *(..))";
 
 
-    /**
+ /*   *//**
      * Defines a pointcut for the annotation RequiresPermission.
-     */
+     *//*
     private static final String POINTCUT_METHOD_MULTIPLE_PERMISSION =
             "execution(@co.kruzr.bernoulli.annotation.repeatable.PermissionsRepeatable * *(..))";
 
-    /**
+    *//**
      * Defines a pointcut for the annotation RequiresSetting.
-     */
+     *//*
     private static final String POINTCUT_METHOD_MULTIPLE_SETTING =
             "execution(@co.kruzr.bernoulli.annotation.repeatable.SettingsRepeatable * *(..))";
-
+*/
 
     /**
      * Defines a pointcut for the annotation AttachScreen.
@@ -123,13 +125,13 @@ public class FlowAspect {
     }
 
 
-    @Pointcut(POINTCUT_METHOD_MULTIPLE_PERMISSION)
+ /*   @Pointcut(POINTCUT_METHOD_MULTIPLE_PERMISSION)
     public void methodWithMultiplePermissions() {
     }
 
     @Pointcut(POINTCUT_METHOD_MULTIPLE_SETTING)
     public void methodWithMultipleSettings() {
-    }
+    }*/
 
     /**
      * Whenever a method is executed which is annotated with any of the annotations whose pointcuts have been defined
@@ -168,7 +170,10 @@ public class FlowAspect {
 
             // in the case of RequiresPermission and RequiresSetting, the evaluation is done together. Therefore,
             // should break from the loop whenever either of these annotations is found
-            else if (annotation.annotationType() == RequiresPermission.class || annotation.annotationType() == RequiresSetting.class) {
+            else if (annotation.annotationType() == RequiresPermission.class
+                    || annotation.annotationType() == RequiresSetting.class
+                    || annotation.annotationType() == PermissionsRepeatable.class
+                    || annotation.annotationType() == SettingsRepeatable.class) {
 
                 if (!arePermsAndSettingsProcessed) {
 

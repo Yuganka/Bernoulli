@@ -102,9 +102,19 @@ public class MyBernoulliActivityAsk extends BernoulliActivity implements View.On
 
 
     @PermissionRequestCode(value = REQUEST_CODE_BUTTON_3)
+    @RequiresPermission(permission = Permission.CAMERA, permissionDisabledPolicy =
+            PermissionDisabledPolicy.ASK_IF_MISSING)
     @RequiresPermission(permission = Permission.RECORD_AUDIO, permissionDisabledPolicy =
             PermissionDisabledPolicy.ASK_IF_MISSING)
-    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
+    @RequiresPermission(permission = Permission.ACCESS_FINE_LOCATION, permissionDisabledPolicy =
+            PermissionDisabledPolicy.ASK_IF_MISSING)
+    @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = false, settingsStateMismatchPolicy =
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
+    @RequiresSetting(setting = Settings.INTERNET_MOBILE_DATA, shouldBeEnabled = true, settingsStateMismatchPolicy =
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
+    @RequiresSetting(setting = Settings.AUTO_ROTATE, shouldBeEnabled = false, settingsStateMismatchPolicy =
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
+    @RequiresSetting(setting = Settings.BLUETOOTH, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.SHOW_DIALOG)
     private void button3() {
 

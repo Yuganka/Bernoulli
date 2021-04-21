@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 /**
  * Helper class that works as starting point for showing the dialog to the user to enable/disable the settings that
  * are required by a specific method and which have set SettingsStateMismatchPolicy as SettingsStateMismatchPolicy
- * .SHOW_DIALOG_IF_STATE_MISMATCH.
+ * .SHOW_DIALOG.
  */
 @AllArgsConstructor
 public class AskSettingSet {
@@ -34,24 +34,37 @@ public class AskSettingSet {
 
             Log.e("Bernoulli", "AskSettingSet Current activity not null");
 
-            new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
-                    .setTitle(requiresSettings.get(0).setting().getDescription())
-                    .setMessage(createMessage(requiresSettings.get(0)))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+            if (requiresSettings.size() == 1)
+
+                new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
+                        .setTitle(requiresSettings.get(0).setting().getDescription())
+                        .setMessage(createMessage(requiresSettings.get(0)))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            else
+                new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
+                        .setTitle("Settings")
+                        .setMessage(getConsolidatedMessage())
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
         }
     }
 
     /**
      * Creates the message to be shown in the dialog.
      *
-     * @param requiresSetting   the setting for which the dialog needs to be shown.
-     * @return                  the message that needs to be shown
+     * @param requiresSetting the setting for which the dialog needs to be shown.
+     * @return the message that needs to be shown
      */
     private String createMessage(RequiresSetting requiresSetting) {
 
@@ -60,5 +73,26 @@ public class AskSettingSet {
         return "Please ensure that "
                 + requiresSetting.setting().getDescription() + " is "
                 + (requiresSetting.shouldBeEnabled() ? "enabled." : "disabled.");
+    }
+
+    /**
+     * Creates a consolidated message for multiple settings.
+     *
+     * @return the message that needs to be shown
+     */
+    private String getConsolidatedMessage() {
+
+        Log.e("Bernoulli", "creating message");
+
+        StringBuilder message = new StringBuilder("Please ensure that \n\n");
+
+        for (RequiresSetting requiresSetting : requiresSettings)
+            message.append("- ")
+                    .append(requiresSetting.setting().getDescription())
+                    .append(" is ")
+                    .append(requiresSetting.shouldBeEnabled() ? "enabled" : "disabled")
+                    .append("\n");
+
+        return message.toString();
     }
 }

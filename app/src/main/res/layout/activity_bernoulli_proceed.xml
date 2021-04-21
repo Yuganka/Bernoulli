@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:text="Camera proceed, GPS proceed"
+        android:text="Camera proceed, GPS proceed, Internet any show"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 

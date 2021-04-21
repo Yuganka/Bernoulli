@@ -2,6 +2,7 @@ package co.kruzr.bernoulli.desilting;
 
 import android.os.Build;
 
+import co.kruzr.bernoulli.Constants;
 import co.kruzr.bernoulli.CurrentScreen;
 import lombok.AllArgsConstructor;
 
@@ -24,7 +25,7 @@ public class AskPermissionSet {
 
         if (CurrentScreen.INSTANCE.getCurrentActivity() != null)
 
-            if (Build.VERSION.SDK_INT >= 23) {
+            if (Build.VERSION.SDK_INT >= Constants.MIN_API_LEVEL_RUNTIME_PERMISSIONS) {
 
                 CurrentScreen.INSTANCE.getCurrentActivity().askPermissions(
                         getPermissionStringArray(),

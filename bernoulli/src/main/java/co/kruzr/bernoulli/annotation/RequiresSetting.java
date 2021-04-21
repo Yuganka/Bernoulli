@@ -1,12 +1,14 @@
 package co.kruzr.bernoulli.annotation;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import co.kruzr.bernoulli.Settings;
 import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
+import co.kruzr.bernoulli.annotation.repeatable.SettingsRepeatable;
 
 /***
  * An annotation that specifies a given setting requirement for a method, and the expected behaviour when its desired
@@ -14,6 +16,7 @@ import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
  *
  * A method can apply this annotation only once.
  */
+@Repeatable(SettingsRepeatable.class)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresSetting {

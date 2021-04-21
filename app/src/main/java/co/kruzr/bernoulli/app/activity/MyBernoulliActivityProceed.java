@@ -85,7 +85,9 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
     @RequiresPermission(permission = Permission.CAMERA, permissionDisabledPolicy =
             PermissionDisabledPolicy.PROCEED)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.PROCEED)
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
+    @RequiresSetting(setting = Settings.INTERNET_MOBILE_DATA, shouldBeEnabled = false, settingsStateMismatchPolicy =
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
     private void button1() {
 
         textviewLogs.setText("Run Setting proceed");
