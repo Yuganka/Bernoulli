@@ -30,12 +30,18 @@ public class FlowAspect {
 
     /**
      * Defines a pointcut for the annotation RequiresPermission.
+     *
+     * This string is basically an instruction to capture all instances where a method annotated with
+     * RequiresPermission is executed.
      */
     private static final String POINTCUT_METHOD_PERMISSION =
             "execution(@co.kruzr.bernoulli.annotation.RequiresPermission * *(..))";
 
     /**
      * Defines a pointcut for the annotation RequiresSetting.
+     *
+     * This string is basically an instruction to capture all instances where a method annotated with
+     * RequiresSetting is executed.
      */
     private static final String POINTCUT_METHOD_SETTING =
             "execution(@co.kruzr.bernoulli.annotation.RequiresSetting * *(..))";
@@ -56,19 +62,37 @@ public class FlowAspect {
 
     /**
      * Defines a pointcut for the annotation AttachScreen.
+     *
+     * This string is basically an instruction to capture all instances where a method annotated with
+     * AttachScreen is executed.
      */
     private static final String POINTCUT_METHOD_ATTACH_SCREEN =
             "execution(@co.kruzr.bernoulli.annotation.AttachScreen * *(..))";
 
 
+    /**
+     * The instances of methods with a RequiresPermission annotation are, in a sense, directed to this method.
+     *
+     * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
+     */
     @Pointcut(POINTCUT_METHOD_PERMISSION)
     private void methodAnnotatedWithRequiresPermission() {
     }
 
+    /**
+     * The instances of methods with a RequiresSetting annotation are, in a sense, directed to this method.
+     *
+     * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
+     */
     @Pointcut(POINTCUT_METHOD_SETTING)
     private void methodAnnotatedWithRequiresSetting() {
     }
 
+    /**
+     * The instances of methods with a AttachScreen annotation are, in a sense, directed to this method.
+     *
+     * This is carried out based on the parameter passed in the @Pointcut annotation that has been applied.
+     */
     @Pointcut(POINTCUT_METHOD_ATTACH_SCREEN)
     private void methodAnnotatedWithAttachScreen() {
     }
@@ -82,11 +106,14 @@ public class FlowAspect {
     }
 
     /**
-     * Whenever a method annotated with RequiresPermission or RequiresSetting is called, code execution will first
-     * happen in this method from where we can control whether the rest of the method executes or not.
-     * <p>
-     * This method will extract the permissions and settings required by that method and evaluate the missing
-     * permissions and settings and then give a callback through the appropriate interface.
+     * Whenever a method is executed which is annotated with any of the annotations whose pointcuts have been defined
+     * above, code execution will be done "Around" this method, since we are using the @Around annotation.
+     *
+     * This means, the control will first come to this method, then we can decide whether the method's actual code
+     * should be executed or not.
+     *
+     * @return  joinPoint.proceed() if we want the annotated method's code to be executed, null if we don't want it
+     * to be executed.
      */
     @Around("methodAnnotatedWithRequiresPermission() " +
             " || methodAnnotatedWithRequiresSetting() " +
@@ -131,7 +158,16 @@ public class FlowAspect {
     }
 
 
-    // this method returning null implies the method should not be executed.
+    /**
+     * This method will extract the permissions and settings required by that method and evaluate the missing
+     * permissions and settings and then give a callback through the appropriate interface.
+     *
+     * @param methodSignature    the method whose permission and setting requirements need to be extracted.
+     * @param joinPoint          an object that represents the control of flow in the method which has been annotated
+     *
+     * @return joinPoint.proceed() if we want the annotated method's code to be executed, null otherwise.
+     * @throws Throwable
+     */
     private Object doRequiresSettingAndPermissionWork(MethodSignature methodSignature, ProceedingJoinPoint joinPoint) throws Throwable {
 
         Log.e("Bernoulli", "doRequiresSettingAndPermissionWork");
@@ -178,8 +214,15 @@ public class FlowAspect {
         }
     }
 
-    // this method returning null implies the method should not be executed.
-    private void doAttachActivityWork(MethodSignature methodSignature) throws Throwable {
+    /**
+     * This method (figuratively) attaches / detaches the current activity based on its lifecycle methods. This is to
+     * ensure that if we do need to ask for permissions, the onRequestPermissionsResult callback comes to the
+     * appropriate activity.
+     *
+     * @param methodSignature    the method on which AttachScreen annotation has been used.
+     *
+     **/
+    private void doAttachActivityWork(MethodSignature methodSignature) {
 
         Log.e("Bernoulli", "doAttachActivityWork");
 

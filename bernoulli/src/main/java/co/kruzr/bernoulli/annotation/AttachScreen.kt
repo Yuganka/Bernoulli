@@ -1,8 +1,8 @@
 package co.kruzr.bernoulli.annotation
 
 /***
- * An annotation that ensures the current screen's state is saved in CurrentScreen class by making the class active
- * in it's onResume and inactive in its onPause lifecycle methods.
+ * An internal annotation that ensures that whenever a sub-class of BernoulliActivity is being used, its state
+ * is saved in CurrentScreen class by making the class active in it's onResume and inactive in its onPause lifecycle methods.
  *
  * A method can apply this annotation only once.
  */
@@ -10,6 +10,6 @@ package co.kruzr.bernoulli.annotation
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 internal annotation class AttachScreen(
         /**
-         * If the screen is active.
+         * If the screen is active. Defaults to false.
          */
         val isActive: Boolean = false)

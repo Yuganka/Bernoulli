@@ -5,12 +5,12 @@ import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 
 /**
- * A class to perform GPS related checks.
+ * A helper class to perform GPS related checks.
  */
 internal class GPSManager constructor(private val context: Context){
 
     /**
-     * @return true if the GPS is ON, else false
+     * @return true if the GPS is ON, false otherwise
      */
     val isGPSTurnedOn: Boolean
 

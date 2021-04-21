@@ -1,13 +1,21 @@
 package co.kruzr.bernoulli;
 
 /**
- * Covers what to do in the event of a particular Setting being disabled.
+ * Covers what to do in the event of a particular Setting's state being different from what the client desires.
+ * disabled.
  *
- * Please read the doc associated with ${PermissionDisabledPolicy.ASK_IF_MISSING}.
+ * Please read the doc associated with PermissionDisabledPolicy.ASK_IF_MISSING.
  */
 public enum SettingsStateMismatchPolicy {
 
+    /**
+     * Proceed with the execution of the method.
+     */
     PROCEED,
+
+    /**
+     * Stop the execution of the method.
+     */
     FAIL,
 
     /**

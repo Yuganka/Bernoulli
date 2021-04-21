@@ -9,8 +9,8 @@ import co.kruzr.bernoulli.Settings;
 import co.kruzr.bernoulli.SettingsStateMismatchPolicy;
 
 /***
- * An annotation that encapsulates the setting requirements of a method, and the expected behaviour when that setting
- * is disabled.
+ * An annotation that specifies a given setting requirement for a method, and the expected behaviour when its desired
+ * state is different from its actual state.
  *
  * A method can apply this annotation only once.
  */
@@ -24,12 +24,13 @@ public @interface RequiresSetting {
     Settings setting();
 
     /**
-     * Whether the setting should be enabled.
+     * Whether the setting is desired to be enabled or disabled.
      */
     boolean shouldBeEnabled() default true;
 
     /**
-     * Expected behaviour if the setting state mismatches the requirement.
+     * Expected behaviour if the actual setting state mismatches the one desired. If not specified, usual method execution shall
+     * proceed if the setting state is different from the one desired.
      */
     SettingsStateMismatchPolicy settingsStateMismatchPolicy() default SettingsStateMismatchPolicy.PROCEED;
 }

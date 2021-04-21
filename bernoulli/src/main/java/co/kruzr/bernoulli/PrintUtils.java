@@ -10,7 +10,7 @@ import co.kruzr.bernoulli.annotation.RequiresSetting;
 import co.kruzr.bernoulli.desilting.Dam;
 
 /**
- * Class to simplify printing.
+ * Helper class for printing and logging related stuff.
  */
 class PrintUtils {
 
@@ -36,11 +36,10 @@ class PrintUtils {
     }
 
     /**
-     * To print the list of currently missing permissions and settings for the method contained in the
-     * evaluatedStream object.
+     * To print the list of currently missing permissions and settings that are impeding the flow of a stream.
      *
      * @param dam containing details of the obstructions in the stream (i.e. method)
-     * @return stringified missing permissions and settings
+     * @return    stringified missing permissions and settings
      */
     public static String printMissingPermissionsAndSettings(Dam dam) {
 
@@ -77,24 +76,5 @@ class PrintUtils {
 
         Log.e("Bernoulli", "Current Activity - " + CurrentScreen.INSTANCE.getCurrentActivity());
         Log.e("Bernoulli", "Current Activity Hashcode - " + CurrentScreen.INSTANCE.getCurrentActivityHashcode());
-    }
-
-    private String getCombinedString(List<Permission> listMissingPerms,
-                                     List<Settings> listMissingSettings) {
-
-        StringBuilder combined = new StringBuilder();
-
-        combined.append("Permissions - ").append("\n");
-
-        for (Permission perm : listMissingPerms)
-            combined.append(perm).append("\n");
-
-        combined.append("\nSettings\n");
-
-        for (Settings setting : listMissingSettings)
-            combined.append(setting).append("\n");
-
-        return combined.toString();
-
     }
 }

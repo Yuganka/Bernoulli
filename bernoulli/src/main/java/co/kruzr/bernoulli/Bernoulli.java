@@ -17,7 +17,7 @@ import android.content.Context;
  * <p>
  * We can think of each class as a river and each method in the class like a stream in the river.
  * <p>
- * This is the class through which the client will interact with the library.
+ * This is the class through which the client will initialise the "magical formulas" of Bernoulli.
  */
 public class Bernoulli {
 
@@ -35,6 +35,11 @@ public class Bernoulli {
             bernoulliInstance = new Bernoulli(application.getApplicationContext());
     }
 
+    /**
+     * Private constructor.
+     *
+     * @param context
+     */
     private Bernoulli(Context context) {
         BernoulliBank.setContext(context);
     }
