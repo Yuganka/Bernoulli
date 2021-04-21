@@ -2,10 +2,7 @@ package co.kruzr.bernoulli.desilting;
 
 import android.os.Build;
 
-import java.util.List;
-
 import co.kruzr.bernoulli.CurrentScreen;
-import co.kruzr.bernoulli.annotation.RequiresPermission;
 import lombok.AllArgsConstructor;
 
 /**
@@ -16,9 +13,9 @@ import lombok.AllArgsConstructor;
 public class AskPermissionSet {
 
     /**
-     * The list of permissions required by a specific method.
+     * Encapsulates the conditions associated with a stream's flow.
      */
-    private final List<RequiresPermission> requiresPermission;
+    private final Dam dam;
 
     /**
      * Start asking for permissions for a specific method
@@ -30,17 +27,17 @@ public class AskPermissionSet {
             if (Build.VERSION.SDK_INT >= 23) {
 
                 CurrentScreen.INSTANCE.getCurrentActivity().askPermissions(
-                        new String[]{requiresPermission.get(0).permission().getPermissionName()},
-                        requiresPermission.get(0).permissionRequestCode());
+                        getPermissionStringArray(),
+                        dam.getPermissionRequestCode());
             }
     }
 
     private String[] getPermissionStringArray() {
 
-        String[] permArray = new String[requiresPermission.size()];
+        String[] permArray = new String[dam.getAskPermissions().size()];
 
-        for (int i = 0; i < requiresPermission.size(); i++) {
-            permArray[i] = requiresPermission.get(i).permission().getPermissionName();
+        for (int i = 0; i < dam.getAskPermissions().size(); i++) {
+            permArray[i] = dam.getAskPermissions().get(i).permission().getPermissionName();
         }
 
         return permArray;

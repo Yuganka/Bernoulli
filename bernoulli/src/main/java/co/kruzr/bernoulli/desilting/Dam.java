@@ -8,6 +8,7 @@ import co.kruzr.bernoulli.StreamFlowState;
 import co.kruzr.bernoulli.annotation.RequiresPermission;
 import co.kruzr.bernoulli.annotation.RequiresSetting;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Model class for a dam which may have been constructed on a given stream, which is basically a metaphor for
@@ -23,6 +24,13 @@ public class Dam {
      */
     @Getter
     private final StreamFlowState streamFlowState;
+
+    /**
+     * The permissionRequestCode that will be used to ask for permissions associated with the method.
+     */
+    @Getter
+    @Setter
+    private Integer permissionRequestCode;
 
     /**
      * The list of permissions that need to be asked, values will only be relevant when streamFlowState is

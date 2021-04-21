@@ -25,10 +25,6 @@ import co.kruzr.bernoulli.app.R;
  */
 public class MyBernoulliActivityProceed extends BernoulliActivity implements View.OnClickListener {
 
-    private final int REQUEST_CODE_FINE_LOCATION = 123;
-    private final int REQUEST_CODE_CAMERA = 456;
-    private final int REQUEST_CODE_RECORD_AUDIO = 789;
-
     private TextView textviewLogs;
     private Button button1, button2, button3;
 
@@ -87,7 +83,7 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
     }
 
     @RequiresPermission(permission = Permission.CAMERA, permissionDisabledPolicy =
-            PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_CAMERA)
+            PermissionDisabledPolicy.PROCEED)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.PROCEED)
     private void button1() {
@@ -96,7 +92,7 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
     }
 
     @RequiresPermission(permission = Permission.ACCESS_FINE_LOCATION, permissionDisabledPolicy =
-            PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_FINE_LOCATION)
+            PermissionDisabledPolicy.PROCEED)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
             SettingsStateMismatchPolicy.FAIL)
     private void button2() {
@@ -105,9 +101,9 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
     }
 
     @RequiresPermission(permission = Permission.RECORD_AUDIO, permissionDisabledPolicy =
-            PermissionDisabledPolicy.PROCEED, permissionRequestCode = REQUEST_CODE_RECORD_AUDIO)
+            PermissionDisabledPolicy.PROCEED)
     @RequiresSetting(setting = Settings.GPS, shouldBeEnabled = true, settingsStateMismatchPolicy =
-            SettingsStateMismatchPolicy.SHOW_DIALOG_IF_STATE_MISMATCH)
+            SettingsStateMismatchPolicy.SHOW_DIALOG)
     private void button3() {
 
         textviewLogs.setText("Run Setting show dialog");
@@ -117,24 +113,14 @@ public class MyBernoulliActivityProceed extends BernoulliActivity implements Vie
         textviewLogs.setText("");
     }
 
+    /**
+     * Since we won't be asking for permissions in any of the cases in this activity, no callback to this method
+     * shall come.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.e("Bernoulli", "MBA onRequestPermissionsResult, SIZE : " + grantResults.length + ", Value " + grantResults[0]);
-
-        switch (requestCode) {
-
-            case REQUEST_CODE_CAMERA:
-                button1();
-                break;
-
-            case REQUEST_CODE_FINE_LOCATION:
-                button2();
-                break;
-
-            case REQUEST_CODE_RECORD_AUDIO:
-                button3();
-                break;
-        }
+        Log.e("Bernoulli",
+                "MBAP onRequestPermissionsResult, SIZE : " + grantResults.length + ", Value " + grantResults[0]);
     }
 }
