@@ -21,7 +21,11 @@ public enum Settings {
 
     INTERNET_MOBILE_DATA("Mobile Internet"),
 
-    AIRPLANE_MODE("Airplane Mode");
+    AIRPLANE_MODE("Airplane Mode"),
+
+    BATTERY_SAVER("Battery Saver"),
+
+    DATA_ROAMING("Device Roaming");
 
     @Getter
     private final String description;

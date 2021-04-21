@@ -2,6 +2,7 @@ package co.kruzr.bernoulli.managers
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.os.PowerManager
 import co.kruzr.bernoulli.Settings
 import co.kruzr.bernoulli.annotation.RequiresSetting
 
@@ -42,6 +43,10 @@ internal class SettingsManager constructor(private val context : Context){
 
             Settings.AIRPLANE_MODE -> android.provider.Settings.Global.getInt(context.contentResolver,
                     android.provider.Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+
+            Settings.BATTERY_SAVER -> (context.getSystemService(Context.POWER_SERVICE) as PowerManager).isPowerSaveMode
+
+            Settings.DATA_ROAMING -> NetworkManager(context).isDeviceInRoamingState
         }
 
         return requiresSetting.shouldBeEnabled == isEnabled

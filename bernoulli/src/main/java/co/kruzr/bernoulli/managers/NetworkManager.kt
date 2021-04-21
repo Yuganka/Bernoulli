@@ -36,4 +36,13 @@ internal class NetworkManager constructor(private val context: Context){
             networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
             return if (networkInfo != null) networkInfo!!.isConnected else false
         }
+
+    /**
+     * @return true if device is in roaming state, false otherwise
+     */
+    val isDeviceInRoamingState: Boolean
+        get() {
+            networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+            return if (networkInfo != null) networkInfo!!.isRoaming else false
+        }
 }
