@@ -1,33 +1,31 @@
-Android-AOPExample [![Build Status](https://travis-ci.org/android10/Android-AOPExample.svg)](https://travis-ci.org/android10/Android-AOPExample)
+Bernoulli
 ==================
 
-This is a simple example of [Aspect Oriented Programming in Android](http://fernandocejas.com/2014/08/03/aspect-oriented-programming-in-android/) as part of a blog post I have written.
-The idea was to measure how long takes a method to be executed, so based on annotations, a Metrics aspect was created for making easy to trace a method execution (you can take a look at the 'gintonic' folder).
-I wrote an article about Aspect Oriented Development in Android here:
-
-After developing this I realized Jake Wharton has already created a very useful library called [Hugo](https://github.com/JakeWharton/hugo) (I refactored my code to look like this amazing library but mine is kind of a more primitive version, although as an example works fine :)).
-
-The idea is simple, you just add `@DebugTrace` to any method and in the logcat you will see something like this:
-
-```
-Gintonic --> onMeasure --> [10ms]
-```
+This is a fork of Fernando Cejas's example of [Aspect Oriented Programming in Android](https://github.com/android10
+/Android-AOPExample). A big shout out to him for providing a working example of AOP in Android.
 
 
-Local Development
------------------
+Daniel Bernoulli was a Swiss mathematician and physicist who came up with his famous Bernoulli's Principle in 1738.
 
-Here are some useful Gradle/adb commands for executing this example:
+The principle concerns characterising the flow of a fluid and says that the velocity and pressure at any point are
+inversely related - more the pressure slower the velocity and vice versa.
 
- * `./gradlew clean build` - Build the entire example.
- * `./gradlew installDebug` - Install the debug apk in the current connected device.
- * `adb shell am start -n android10.org.viewgroupperformance/org.android10.viewgroupperformance.activity.MainActivity` - Start the Main Activity of the example.
+This library is trying to characterise the flow of code execution in Android on similar lines.
 
+It aims to provide a clear representation of the impediments in the flow of certain code sequences (for example,
+requirements of certain Android permissions or settings) to help you better plan how your application should
+proceed in the presence or absence of the same.
+
+We can think of each class as a river and each method in the class like a stream in the river.
+
+You just add @RequiresPermission or @RequiresSetting to the method(s) which need it and Mr. Bernoulli will take care
+of the processing at runtime. In addition, you can also choose an appropriate permission disabled policy and setting
+state mismatch policy.
 
 License
 --------
 
-    Copyright 2014 Fernando Cejas
+    Copyright 2021 Yuganka Sharan
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -40,8 +38,3 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-![http://www.fernandocejas.com](https://github.com/android10/Sample-Data/blob/master/android10/android10_logo_big.png)
-
-<a href="https://www.buymeacoffee.com/android10" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
