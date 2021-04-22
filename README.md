@@ -1,8 +1,7 @@
 Bernoulli
 ==================
 
-This is a fork of Fernando Cejas's example of [Aspect Oriented Programming in Android](https://github.com/android10
-/Android-AOPExample). A big shout out to him for providing a working example of AOP in Android.
+This is a fork of Fernando Cejas's example of [Aspect Oriented Programming in Android](https://github.com/android10/Android-AOPExample). A big shout out to him for providing a working example of AOP in Android.
 
 
 Daniel Bernoulli was a Swiss mathematician and physicist who came up with his famous Bernoulli's Principle in 1738.
