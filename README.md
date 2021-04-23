@@ -63,10 +63,11 @@ allprojects {
 
     ```groovy
     implementation 'org.aspectj:aspectjrt:1.9.4'
-    implementation 'com.yugankasharan.bernoulli:bernoulli:$version'
+    implementation 'com.yugankasharan.bernoulli:bernoulli:0.1.0'
     ```
 
- *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point - 
+ *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point if you
+  haave synced the project after the previosu changes - 
 
     ```groovy
     final def variants = project.android.applicationVariants
