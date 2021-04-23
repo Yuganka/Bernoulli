@@ -38,17 +38,17 @@ allprojects {
 }
 ```
 
-2. Then, in your module's build.gradle file's dependencies - 
+2. Then, in your module's build.gradle file, make the following changes - 
 
  *  Add the following before any plugins that you may be applying - 
 
-```groovy
-buildscript {
-     dependencies {
-          classpath 'org.aspectj:aspectjtools:1.9.4'
-     }
-}
-```
+    ```groovy
+    buildscript {
+         dependencies {
+              classpath 'org.aspectj:aspectjtools:1.9.4'
+         }
+    }
+    ```
 
  *  Bernoulli requires Java 8 to function. So, in the android section, add the following -
 
