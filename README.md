@@ -67,7 +67,7 @@ allprojects {
     ```
 
  *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point if you
-  haave synced the project after the previosu changes - 
+  have synced the project after the previous changes - 
 
     ```groovy
     final def variants = project.android.applicationVariants
