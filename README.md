@@ -17,9 +17,87 @@ proceed in the presence or absence of the same.
 
 We can think of each class as a river and each method in the class like a stream in the river.
 
-You just add @RequiresPermission or @RequiresSetting to the method(s) which need it and Mr. Bernoulli will take care
-of the processing at runtime. In addition, you can also choose an appropriate permission disabled policy and setting
-state mismatch policy.
+You just add `@RequiresPermission` or `@RequiresSetting` annotation(s) to the method(s) which need it and Mr. Bernoulli
+ will take care of the processing at runtime. In addition, you can also choose an appropriate
+  `PermissionDisabledPolicy` and `SettingsStateMismatchPolicy`.
+  
+
+Setup
+-----
+
+1. In your project level build.gradle file, add the following -  
+
+```groovy
+allprojects {
+    repositories {
+
+        maven {
+            url "http://15.206.89.169:8081/repository/bernoulli/"
+        }
+    }
+}
+```
+
+2. Then, in your module's build.gradle file's dependencies - 
+
+ *  Add the following before any plugins that you may be applying - 
+
+```groovy
+        buildscript {
+            dependencies {
+                classpath 'org.aspectj:aspectjtools:1.9.4'
+            }
+        }
+```
+
+ *  Bernoulli requires Java 8 to function. So, in the android section, add the following -
+
+```groovy
+        compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+```
+
+ *  Add the following in your dependencies section - 
+
+```groovy
+            implementation 'org.aspectj:aspectjrt:1.9.4'
+            implementation 'com.yugankasharan.bernoulli:bernoulli:$version'
+```
+
+ *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point - 
+
+```groovy
+        final def variants = project.android.applicationVariants
+        
+        variants.all { variant ->
+        
+            variant.javaCompile.doLast {
+        
+                String[] args = ["-showWeaveInfo",
+                                 "-1.5",
+                                 "-inpath", javaCompile.destinationDir.toString(),
+                                 "-aspectpath", javaCompile.classpath.asPath,
+                                 "-d", javaCompile.destinationDir.toString(),
+                                 "-classpath", javaCompile.classpath.asPath,
+                                 "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+        
+                new Main().run(args, new MessageHandler(true));
+            }
+        }
+```
+
+Usage
+-----
+
+1. Initialise Bernoulli in your application sub-class's `onCreate` - 
+
+    Bernoulli.startFlowing(this)
+ 
+        
+2. You can use Bernoulli annotations only in a sub-class of `BernoulliActivity`. So, create a sub-class and then you
+ are free to use `@RequiresPermission` and `@RequiresSetting` annotations on its methods.
 
 License
 --------

@@ -1,97 +1,71 @@
-import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
 
 buildscript {
-  repositories {
-    google()
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'com.android.tools.build:gradle:3.5.1'
-    classpath 'org.aspectj:aspectjtools:1.9.4'
-  }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'org.aspectj:aspectjtools:1.9.4'
+    }
 }
 
 apply plugin: 'com.android.application'
 
 repositories {
-  google()
-  mavenCentral()
+    google()
+    mavenCentral()
 }
 
 dependencies {
 
-  implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
-  implementation project(':bernoulli')
-  implementation 'org.aspectj:aspectjrt:1.9.4'
+    implementation project(':bernoulli')
+    implementation 'org.aspectj:aspectjrt:1.9.4'
 }
 
 android {
-  compileSdkVersion 30
-  buildToolsVersion "30.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
-  defaultConfig {
+    defaultConfig {
 
-    applicationId 'co.kruzr.bernoulli.app'
-    minSdkVersion 21
-    targetSdkVersion 30
+        applicationId 'co.kruzr.bernoulli.app'
+        minSdkVersion 21
+        targetSdkVersion 30
 
-    versionCode 1
-    versionName "0.1.0"
-  }
+        versionCode 1
+        versionName "0.1.0"
+    }
 
-  lintOptions {
-    abortOnError true
-  }
+    lintOptions {
+        abortOnError true
+    }
 
-  compileOptions {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-  }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
-final def log = project.logger
 final def variants = project.android.applicationVariants
 
 variants.all { variant ->
-  if (!variant.buildType.isDebuggable()) {
-    log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
-    return;
-  }
 
-  JavaCompile javaCompile = variant.javaCompile
-  javaCompile.doLast {
-    String[] args = ["-showWeaveInfo",
-                     "-1.5",
-                     "-inpath", javaCompile.destinationDir.toString(),
-                     "-aspectpath", javaCompile.classpath.asPath,
-                     "-d", javaCompile.destinationDir.toString(),
-                     "-classpath", javaCompile.classpath.asPath,
-                     "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
-    log.debug "ajc args: " + Arrays.toString(args)
+    variant.javaCompile.doLast {
 
-    MessageHandler handler = new MessageHandler(true);
-    new Main().run(args, handler);
-    for (IMessage message : handler.getMessages(null, true)) {
-      switch (message.getKind()) {
-        case IMessage.ABORT:
-        case IMessage.ERROR:
-        case IMessage.FAIL:
-          log.error message.message, message.thrown
-          break;
-        case IMessage.WARNING:
-          log.warn message.message, message.thrown
-          break;
-        case IMessage.INFO:
-          log.info message.message, message.thrown
-          break;
-        case IMessage.DEBUG:
-          log.debug message.message, message.thrown
-          break;
-      }
+        String[] args = ["-showWeaveInfo",
+                         "-1.5",
+                         "-inpath", javaCompile.destinationDir.toString(),
+                         "-aspectpath", javaCompile.classpath.asPath,
+                         "-d", javaCompile.destinationDir.toString(),
+                         "-classpath", javaCompile.classpath.asPath,
+                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+
+        new Main().run(args, new MessageHandler(true));
     }
-  }
 }
 
