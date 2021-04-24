@@ -105,6 +105,9 @@ Usage
 
 3. Ensure that the permissions you are mentioning in `@RequiresPermission` annotation have also been, as usual,
   declared in your manifest. 
+  
+  
+4. Documentation is available [here](https://kruzrmobility.github.io/Bernoulli/). 
 
 License
 --------
