@@ -1,62 +1,47 @@
-package co.kruzr.bernoulli.desilting;
+package co.kruzr.bernoulli.desilting
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
-
-import java.util.List;
-
-import co.kruzr.bernoulli.CurrentScreen;
-import co.kruzr.bernoulli.annotation.RequiresSetting;
-import lombok.AllArgsConstructor;
+import android.R
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.util.Log
+import co.kruzr.bernoulli.CurrentScreen.currentActivity
+import co.kruzr.bernoulli.annotation.RequiresSetting
 
 /**
  * Helper class that works as starting point for showing the dialog to the user to enable/disable the settings that
  * are required by a specific method and which have set SettingsStateMismatchPolicy as SettingsStateMismatchPolicy
  * .SHOW_DIALOG.
  */
-@AllArgsConstructor
-public class AskSettingSet {
-
-    /**
-     * The list of settings required by a specific method.
-     */
-    private final List<RequiresSetting> requiresSettings;
+internal class AskSettingSet(
+        /**
+         * The list of settings required by a specific method.
+         */
+        private val requiresSettings: List<RequiresSetting> = arrayListOf()) {
 
     /**
      * Start showing dialog for the setting state requirements for a specific method
      */
-    public void begin() {
+    fun begin() {
 
-        Log.e("Bernoulli", "AskSettingSet begin");
+        Log.e("Bernoulli", "AskSettingSet begin")
 
-        if (CurrentScreen.INSTANCE.getCurrentActivity() != null) {
+        if (currentActivity != null) {
 
-            Log.e("Bernoulli", "AskSettingSet Current activity not null");
+            Log.e("Bernoulli", "AskSettingSet Current activity not null")
 
-            if (requiresSettings.size() == 1)
-
-                new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
-                        .setTitle(requiresSettings.get(0).setting().getDescription())
-                        .setMessage(createMessage(requiresSettings.get(0)))
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+            // Do not convert the positive button dialog interface to lambda, will impede execution
+            if (requiresSettings.size == 1)
+                AlertDialog.Builder(currentActivity)
+                        .setTitle(requiresSettings[0].setting.description)
+                        .setMessage(createMessage(requiresSettings[0]))
+                        .setPositiveButton(R.string.ok, DialogInterface.OnClickListener { dialog, _ -> dialog.dismiss() })
+                        .show()
             else
-                new AlertDialog.Builder(CurrentScreen.INSTANCE.getCurrentActivity())
+                AlertDialog.Builder(currentActivity)
                         .setTitle("Settings")
-                        .setMessage(getConsolidatedMessage())
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+                        .setMessage(consolidatedMessage)
+                        .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                        .show()
         }
     }
 
@@ -66,13 +51,11 @@ public class AskSettingSet {
      * @param requiresSetting the setting for which the dialog needs to be shown.
      * @return the message that needs to be shown
      */
-    private String createMessage(RequiresSetting requiresSetting) {
-
-        Log.e("Bernoulli", "creating message");
-
-        return "Please ensure that "
-                + requiresSetting.setting().getDescription() + " is "
-                + (requiresSetting.shouldBeEnabled() ? "enabled." : "disabled.");
+    private fun createMessage(requiresSetting: RequiresSetting): String {
+        Log.e("Bernoulli", "Creating message for 1 setting")
+        return ("Please ensure that "
+                + requiresSetting.setting.description + " is "
+                + if (requiresSetting.shouldBeEnabled) "enabled." else "disabled.")
     }
 
     /**
@@ -80,19 +63,19 @@ public class AskSettingSet {
      *
      * @return the message that needs to be shown
      */
-    private String getConsolidatedMessage() {
+    private val consolidatedMessage: String
+        get() {
+            Log.e("Bernoulli", "Creating message for >1 settings")
 
-        Log.e("Bernoulli", "creating message");
+            val message = StringBuilder("Please ensure that \n\n")
 
-        StringBuilder message = new StringBuilder("Please ensure that \n\n");
+            for (requiresSetting in requiresSettings)
+                message.append("- ")
+                        .append(requiresSetting.setting.description)
+                        .append(" is ")
+                        .append(if (requiresSetting.shouldBeEnabled) "enabled" else "disabled")
+                        .append("\n")
 
-        for (RequiresSetting requiresSetting : requiresSettings)
-            message.append("- ")
-                    .append(requiresSetting.setting().getDescription())
-                    .append(" is ")
-                    .append(requiresSetting.shouldBeEnabled() ? "enabled" : "disabled")
-                    .append("\n");
-
-        return message.toString();
-    }
+            return message.toString()
+        }
 }

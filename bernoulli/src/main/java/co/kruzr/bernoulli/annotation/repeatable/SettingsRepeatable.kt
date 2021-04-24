@@ -1,12 +1,7 @@
-package co.kruzr.bernoulli.annotation.repeatable;
+package co.kruzr.bernoulli.annotation.repeatable
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import co.kruzr.bernoulli.annotation.RequiresSetting;
+import co.kruzr.bernoulli.annotation.RequiresSetting
+import java.lang.annotation.Inherited
 
 /**
  * Since a given method may have multiple setting requirements, we need to set a meta-annotation @Repeatable to
@@ -15,8 +10,12 @@ import co.kruzr.bernoulli.annotation.RequiresSetting;
  * This is that class.
  */
 @Inherited
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface SettingsRepeatable {
-    RequiresSetting[] value();
-}
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+internal annotation class SettingsRepeatable(
+
+        /**
+         * Signifies that multiple such annotations can be applied
+         */
+        vararg val value: RequiresSetting
+)
