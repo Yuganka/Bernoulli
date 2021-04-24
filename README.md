@@ -59,11 +59,12 @@ allprojects {
     }
     ```
 
- *  Add the following in your dependencies section - 
+ *  Add the following in your dependencies section. Please check Bernoulli's latest version from the [releases page
+ ](https://github.com/KruzrMobility/Bernoulli/releases) - 
 
     ```groovy
     implementation 'org.aspectj:aspectjrt:1.9.4'
-    implementation 'com.yugankasharan.bernoulli:bernoulli:0.1.0'
+    implementation 'com.yugankasharan.bernoulli:bernoulli:$latestVersion'
     ```
 
  *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point if you
@@ -105,6 +106,9 @@ Usage
 
 3. Ensure that the permissions you are mentioning in `@RequiresPermission` annotation have also been, as usual,
   declared in your manifest. 
+  
+  
+4. Documentation is available [here](https://kruzrmobility.github.io/Bernoulli/). 
 
 License
 --------
