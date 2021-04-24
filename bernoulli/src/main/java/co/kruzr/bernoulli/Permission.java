@@ -1,8 +1,12 @@
-package co.kruzr.bernoulli
+package co.kruzr.bernoulli;
 
-import android.Manifest
-import android.annotation.SuppressLint
-import co.kruzr.bernoulli.annotation.DangerousPermissionSince
+import android.Manifest;
+import android.annotation.SuppressLint;
+
+import co.kruzr.bernoulli.annotation.DangerousPermissionSince;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Enumerates the Android Permissions which have "Dangerous" protection level.
@@ -10,18 +14,14 @@ import co.kruzr.bernoulli.annotation.DangerousPermissionSince
  * As of 20/4/2021, this class has been updated till API Level 30.
  */
 @SuppressLint("InlinedApi")
-enum class Permission(
+@AllArgsConstructor
+public enum Permission {
 
-        internal val simpleName: String = "",
-
-        internal val permissionName: String = "") {
-
-
-    @DangerousPermissionSince(28)
+    @DangerousPermissionSince(apiLevel = 28)
     ACCEPT_HANDOVER("Accept Handover", Manifest.permission.ACCEPT_HANDOVER),
 
 
-    @DangerousPermissionSince(29)
+    @DangerousPermissionSince(apiLevel = 29)
     ACCESS_BACKGROUND_LOCATION("Background Location", Manifest.permission.ACCESS_BACKGROUND_LOCATION),
 
 
@@ -31,18 +31,18 @@ enum class Permission(
     ACCESS_FINE_LOCATION("Fine Location", Manifest.permission.ACCESS_FINE_LOCATION),
 
 
-    @DangerousPermissionSince(29)
+    @DangerousPermissionSince(apiLevel = 29)
     ACCESS_MEDIA_LOCATION("Access Media Location", Manifest.permission.ACCESS_MEDIA_LOCATION),
 
 
-    @DangerousPermissionSince(29)
+    @DangerousPermissionSince(apiLevel = 29)
     ACTIVITY_RECOGNITION("Activity Recognition", Manifest.permission.ACTIVITY_RECOGNITION),
 
 
     ADD_VOICEMAIL("Add Voicemail", Manifest.permission.ADD_VOICEMAIL),
 
 
-    @DangerousPermissionSince(26)
+    @DangerousPermissionSince(apiLevel = 26)
     ANSWER_PHONE_CALLS("Answer Phone Calls", Manifest.permission.ANSWER_PHONE_CALLS),
 
 
@@ -76,7 +76,7 @@ enum class Permission(
     READ_EXTERNAL_STORAGE("Read External Storage", Manifest.permission.READ_EXTERNAL_STORAGE),
 
 
-    @DangerousPermissionSince(26)
+    @DangerousPermissionSince(apiLevel = 26)
     READ_PHONE_NUMBERS("Read Phone Numbers", Manifest.permission.READ_PHONE_NUMBERS),
 
 
@@ -111,4 +111,11 @@ enum class Permission(
 
 
     WRITE_EXTERNAL_STORAGE("Write External Storage", Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+    @Getter(AccessLevel.MODULE)
+    public final String simpleName;
+
+    @Getter(AccessLevel.MODULE)
+    public final String permissionName;
 }
