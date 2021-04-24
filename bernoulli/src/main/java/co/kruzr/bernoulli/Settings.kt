@@ -1,13 +1,14 @@
-package co.kruzr.bernoulli;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package co.kruzr.bernoulli
 
 /**
  * Enumerates various Android settings that the client may need.
  */
-@AllArgsConstructor
-public enum Settings {
+enum class Settings (
+
+        /**
+         * The description of the setting
+         */
+        internal val description: String = "") {
 
     GPS("GPS"),
 
@@ -26,7 +27,4 @@ public enum Settings {
     BATTERY_SAVER("Battery Saver"),
 
     DATA_ROAMING("Device Roaming");
-
-    @Getter
-    private final String description;
 }

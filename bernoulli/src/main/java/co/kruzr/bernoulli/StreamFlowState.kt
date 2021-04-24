@@ -1,9 +1,9 @@
-package co.kruzr.bernoulli;
+package co.kruzr.bernoulli
 
 /**
  * Overall state of a given stream i.e. a method.
  */
-public enum StreamFlowState {
+internal enum class StreamFlowState {
 
     /**
      * The stream (method) is free to move forward as it naturally would. So, it should be executed.
@@ -19,5 +19,5 @@ public enum StreamFlowState {
      * The stream (method) has some blockages that need to be removed by asking the user. This implies that either
      * some permissions needs to be asked or a setting dialog needs to be shown to the user.
      */
-    CHOKED;
+    CHOKED
 }
