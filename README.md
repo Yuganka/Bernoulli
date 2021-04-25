@@ -108,7 +108,7 @@ Usage
   declared in your manifest. 
   
   
-4. Documentation is available [here](https://kruzrmobility.github.io/Bernoulli/). 
+4. Documentation is available [here](https://yuganka.github.io/Bernoulli/). 
 
 License
 --------
