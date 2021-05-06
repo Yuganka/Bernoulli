@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
 
-        applicationId 'co.kruzr.bernoulli.app'
+        applicationId 'co.yuganka.bernoulli.app'
         minSdkVersion 21
         targetSdkVersion 30
 

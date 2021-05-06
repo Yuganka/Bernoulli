@@ -22,6 +22,14 @@ You just add `@RequiresPermission` or `@RequiresSetting` annotation(s) to the me
   `PermissionDisabledPolicy` and `SettingsStateMismatchPolicy`.
   
 
+Min Requirements
+-----
+
+Android version - 21
+Gradle version - 5.4.1
+Android Gradle Plugin version - 3.5.1
+
+
 Setup
 -----
 
@@ -59,11 +67,12 @@ allprojects {
     }
     ```
 
- *  Add the following in your dependencies section - 
+ *  Add the following in your dependencies section. Please check Bernoulli's latest version from the [releases page
+ ](https://github.com/Yuganka/Bernoulli/releases) - 
 
     ```groovy
     implementation 'org.aspectj:aspectjrt:1.9.4'
-    implementation 'com.yugankasharan.bernoulli:bernoulli:0.1.0'
+    implementation 'com.yugankasharan.bernoulli:bernoulli:$latestVersion'
     ```
 
  *  Finally, add these lines at the bottom of the file. Relevant imports should be possible at this point if you
@@ -99,15 +108,19 @@ Usage
     ```
        
 2. You can use `@RequiresPermission` and `@RequiresSetting` annotations only in a sub-class of
- `BernoulliActivity`. If you choose `PermissionDisabledPolicy.ASK_IF_MISSING` as permission disabled policy for any
-  `@RequiresPermission` annotation, the callback will come in the same activity's `onRequestPermissionsResult`.
+ `BernoulliActivity`. 
+ 
+ If you set `PermissionDisabledPolicy.ASK_IF_MISSING` as permission disabled policy for any method annotated with
+  `@RequiresPermission`, the callback will come in the same activity's `onRequestPermissionsResult`. So, you must
+   ensure that the method is called when the activity is within resumed state, i.e between its onResume and onPause
+     lifecycle methods. 
  
 
 3. Ensure that the permissions you are mentioning in `@RequiresPermission` annotation have also been, as usual,
   declared in your manifest. 
   
   
-4. Documentation is available [here](https://kruzrmobility.github.io/Bernoulli/). 
+4. Documentation is available [here](https://yuganka.github.io/Bernoulli/). 
 
 License
 --------
