@@ -26,7 +26,9 @@ Min Requirements
 -----
 
 Android version - 21
+
 Gradle version - 5.4.1
+
 Android Gradle Plugin version - 3.5.1
 
 
@@ -110,10 +112,10 @@ Usage
 2. You can use `@RequiresPermission` and `@RequiresSetting` annotations only in a sub-class of
  `BernoulliActivity`. 
  
- If you set `PermissionDisabledPolicy.ASK_IF_MISSING` as permission disabled policy for any method annotated with
-  `@RequiresPermission`, the callback will come in the same activity's `onRequestPermissionsResult`. So, you must
-   ensure that the method is called when the activity is within resumed state, i.e between its onResume and onPause
-     lifecycle methods. 
+    If you set `PermissionDisabledPolicy.ASK_IF_MISSING` as permission disabled policy for any method annotated with
+    `@RequiresPermission`, the callback will come in the same activity's `onRequestPermissionsResult`. So, you must
+    ensure that the method is called when the activity is within resumed state, i.e between its onResume and onPause
+    lifecycle methods. 
  
 
 3. Ensure that the permissions you are mentioning in `@RequiresPermission` annotation have also been, as usual,
