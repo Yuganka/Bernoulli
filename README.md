@@ -35,20 +35,7 @@ Android Gradle Plugin version - 3.5.1
 Setup
 -----
 
-1. In your project level build.gradle file, add the following -  
-
-```groovy
-allprojects {
-    repositories {
-
-        maven {
-            url "http://15.206.89.169:8081/repository/bernoulli/"
-        }
-    }
-}
-```
-
-2. Then, in your module's build.gradle file, make the following changes - 
+In your module's build.gradle file, make the following changes - 
 
  *  Add the following before any plugins that you may be applying - 
 
@@ -114,7 +101,7 @@ Usage
  
     If you set `PermissionDisabledPolicy.ASK_IF_MISSING` as permission disabled policy for any method annotated with
     `@RequiresPermission`, the callback will come in the same activity's `onRequestPermissionsResult`. So, you must
-    ensure that the method is called when the activity is within resumed state, i.e between its onResume and onPause
+    ensure that the method is called when the activity is within resumed state, i.e between its `onResume` and `onPause`
     lifecycle methods. 
  
 
