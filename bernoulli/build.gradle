@@ -13,7 +13,6 @@ buildscript {
     dependencies {
 
         classpath "com.android.tools.build:gradle:3.5.1"
-
         classpath 'org.aspectj:aspectjtools:1.9.4'
     }
 }
@@ -21,6 +20,8 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+
+apply from: rootProject.file('gradle/maven-push-bernoulli.gradle')
 
 repositories {
     google()
@@ -51,10 +52,11 @@ android {
 
     defaultConfig {
 
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 3
-        versionName "0.2.0"
+        minSdkVersion     21
+        targetSdkVersion  30
+
+        versionCode       ARTIFACT_VERSION_CODE.toInteger()
+        versionName       ARTIFACT_VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
