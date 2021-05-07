@@ -14,17 +14,17 @@ afterEvaluate { project ->
 
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                Properties secretProperties = new Properties()
-                secretProperties.load(project.rootProject.file("local.properties").newDataInputStream())
+                Properties props = new Properties()
+                props.load(project.rootProject.file("local.properties").newDataInputStream())
 
                 repository(url: REPOSITORY_RELEASE_URL) {
-                    authentication(userName: secretProperties.getProperty("OSSRH_SONATYPE_USERNAME", ""),
-                            password: secretProperties.getProperty("OSSRH_SONATYPE_PASSWORD", ""))
+                    authentication(userName: props.getProperty("OSSRH_SONATYPE_USERNAME", ""),
+                            password: props.getProperty("OSSRH_SONATYPE_PASSWORD", ""))
                 }
 
                 snapshotRepository(url: REPOSITORY_SNAPSHOT_URL) {
-                    authentication(userName: secretProperties.getProperty("OSSRH_SONATYPE_USERNAME", ""),
-                            password: secretProperties.getProperty("OSSRH_SONATYPE_PASSWORD", ""))
+                    authentication(userName: props.getProperty("OSSRH_SONATYPE_USERNAME", ""),
+                            password: props.getProperty("OSSRH_SONATYPE_PASSWORD", ""))
                 }
 
                 pom.project {
@@ -64,12 +64,12 @@ afterEvaluate { project ->
 
     signing {
 
-        Properties secretProperties = new Properties()
-        secretProperties.load(project.rootProject.file("local.properties").newDataInputStream())
+        Properties props = new Properties()
+        props.load(project.rootProject.file("local.properties").newDataInputStream())
 
-        def signingKey = secretProperties.getProperty("signing.keyId")
-        def signingPassword = secretProperties.getProperty("signing.password")
-        def singingKeyRingFile = secretProperties.getProperty("signing.secretKeyRingFile")
+        def signingKey = props.getProperty("signing.keyId")
+        def signingPassword = props.getProperty("signing.password")
+        def singingKeyRingFile = props.getProperty("signing.secretKeyRingFile")
 
         sign configurations.archives
     }
