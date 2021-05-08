@@ -60,7 +60,6 @@ In your module's build.gradle file, make the following changes -
  ](https://github.com/Yuganka/Bernoulli/releases) - 
 
     ```groovy
-    implementation 'org.aspectj:aspectjrt:1.9.4'
     implementation 'com.yugankasharan.bernoulli:bernoulli:$latestVersion'
     ```
 
